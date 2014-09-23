@@ -4,15 +4,15 @@ SRCS= \
 	  main.cpp
 
 INC=-I/home/Eric/.local/include
-LDFLAGS=-L/home/Eric/.local/lib
-LIBS=-lSDL2
+LDFLAGS=
+LIBS=-L/home/Eric/.local/lib -lSDL2
 
 TARGET=game
 
 ###########################################################
-CXX=g++
+CXX=clang++
 CXXFLAGS=-g -O0
-CPPFLAGS=-Wall -Wextra -std=c++14 -Isrc $(INC)
+CPPFLAGS=-Wall -Wextra -std=c++1y -Isrc $(INC)
 LDLIBS=$(LIBS)
 
 SRC=$(addprefix src/,$(SRCS))

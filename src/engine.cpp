@@ -8,7 +8,7 @@ using namespace std;
 
 int start_engine() {
 
-  if(SDL_Init(SDL_INIT_EVERYTHING) != 0){
+  if(SDL_Init(SDL_INIT_VIDEO) != 0){
     cerr << "SDL_Init error: " << SDL_GetError() << endl;
     return 1;
   }
