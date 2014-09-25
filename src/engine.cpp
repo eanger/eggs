@@ -6,6 +6,12 @@
 
 using namespace std;
 
+namespace {
+const double kMSPerUpdate = 1;
+}
+
+namespace eggs {
+
 int start_engine() {
 
   if(SDL_Init(SDL_INIT_VIDEO) != 0){
@@ -28,30 +34,23 @@ int start_engine() {
                                       -1 /* first available renderer */,
                                       SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-  auto surface = sdl2::make_resource(SDL_CreateRGBSurface,
-                                     SDL_FreeSurface,
-                                     0 /* unused param */,
-                                     640,
-                                     480,
-                                     32,
-                                     0,
-                                     0,
-                                     0,
-                                     0);
-
-  auto texture = sdl2::make_resource(SDL_CreateTextureFromSurface,
-                                     SDL_DestroyTexture,
-                                     renderer.get(),
-                                     surface.get());
+  auto last_tick_count = SDL_GetTicks();
+  auto lag = uint32_t{0};
   while(true) {
+    auto cur_tick_count = SDL_GetTicks();
+    for(lag += cur_tick_count - last_tick_count;
+        lag >= kMSPerUpdate; lag -= kMSPerUpdate){
+      // update
+    }
+    // render
     SDL_RenderClear(renderer.get());
-    SDL_RenderCopy(renderer.get(), texture.get(), NULL, NULL);
     SDL_RenderPresent(renderer.get());
     SDL_Delay(2000);
   }
 
+  SDL_Quit();
   return 0;
 }
 
-
+}
 

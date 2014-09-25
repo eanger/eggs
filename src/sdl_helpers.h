@@ -6,7 +6,7 @@
 #include <type_traits>
 #include <stdexcept>
 
-namespace sdl2 {
+namespace eggs { namespace sdl2 {
   template<typename Creator, typename Destructor, typename... Arguments>
   auto make_resource(Creator creator,
                      Destructor destructor,
@@ -19,6 +19,6 @@ namespace sdl2 {
     return std::unique_ptr<ResourceType, void(*)(ResourceType*)>(resource,
                                                                  destructor);
   }
-}
+} }
 
 #endif // SDL_HELPERS_H
