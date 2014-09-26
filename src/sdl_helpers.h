@@ -19,6 +19,19 @@ namespace eggs { namespace sdl2 {
     return std::unique_ptr<ResourceType, void(*)(ResourceType*)>(resource,
                                                                  destructor);
   }
+
+  template<typename Creator, typename Destructor, typename... Arguments>
+  auto make_scoped_call(Creator creator,
+                        Destructor destructor,
+                        Arguments&&... args){
+    auto res = creator(std::forward<Arguments>(args)...);
+    if(res){
+      throw std::runtime_error{SDL_GetError()};
+    }
+    auto deleter = [=](void*){ destructor(); };
+    return std::unique_ptr<void*,decltype(deleter)>(nullptr, deleter);
+  }
+
 } }
 
 #endif // SDL_HELPERS_H
