@@ -7,7 +7,7 @@ INC=-I/home/Eric/.local/include
 LDFLAGS=
 LIBS=-L/home/Eric/.local/lib -lSDL2
 
-TARGET=game
+TARGET=eggs
 
 ###########################################################
 CXX=clang++
