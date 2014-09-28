@@ -1,4 +1,4 @@
-# EGGS: Eric's Game Generation System
+# Eggs: Eric's Game Generation System
 
 This project is to make a game engine in C++ with the main game play scripting implemented in Python. The ultimate goal will be something awesome like Dwarf Fortress.
 
@@ -16,6 +16,10 @@ The goal is to make the engine in C++ (i.e. rendering, object interactions), but
 
 # To Do
 * ~~Main file to start up the game engine.~~
-* Infinite game loop, polling ~~logic update~~, drawing, rendering.
+* ~~Infinite game loop, polling logic update, drawing, rendering.~~
+* Display fps
+    * Display text
+    * calculate fps
+    * display fps
 * Calling out to python script for game logic.
-
+* Implement simple functionality, then parcel out to scripts when needed.
