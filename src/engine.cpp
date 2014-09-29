@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SDL2/SDL.h>
+//#include <SDL2/SDL_ttf.h>
 
 #include "sdl_helpers.h"
 #include "engine.h"
@@ -8,7 +9,7 @@
 using namespace std;
 
 namespace {
-const double kMSPerUpdate = 1;
+const double kMSPerUpdate = 10;
 }
 
 namespace eggs {
@@ -38,14 +39,19 @@ int start_engine() {
   while(true) {
     State state{State::CONTINUE};
     auto cur_tick_count = SDL_GetTicks();
-    for(lag += cur_tick_count - last_tick_count;
-        lag >= kMSPerUpdate; lag -= kMSPerUpdate){
+    auto elapsed_ticks = cur_tick_count - last_tick_count;
+    last_tick_count = cur_tick_count;
+    auto num_updates = uint32_t{0};
+    for(lag += elapsed_ticks; lag >= kMSPerUpdate; lag -= kMSPerUpdate){
       // update
       update(state, kMSPerUpdate);
       if(state == State::QUIT){
         return 0;
       }
     }
+
+    auto fps = 1 /* frame */ / (elapsed_ticks / 1000.0 /* ms per sec */ );
+    cout << fps << " fps" << endl;
     // render
     SDL_RenderClear(renderer.get());
     SDL_RenderPresent(renderer.get());

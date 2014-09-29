@@ -18,8 +18,12 @@ The goal is to make the engine in C++ (i.e. rendering, object interactions), but
 * ~~Main file to start up the game engine.~~
 * ~~Infinite game loop, polling logic update, drawing, rendering.~~
 * Display fps
-    * Display text
-    * calculate fps
-    * display fps
+    * Display text -> sdl ttf still borked
+    * ~~calculate fps~~
+    * ~~display fps~~ -> stdout
+* Grid of locations (2d vector) updated and iterated
+    * Load tile graphics (8x8)
+    * Render a bunch to screen
+* Only draw subset of locations in screen
 * Calling out to python script for game logic.
 * Implement simple functionality, then parcel out to scripts when needed.
