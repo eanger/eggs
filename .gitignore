@@ -1,3 +1,4 @@
 src/*.o
 game
 game.exe
+eggs.exe
