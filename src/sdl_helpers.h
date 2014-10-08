@@ -24,10 +24,7 @@ namespace eggs { namespace sdl2 {
   auto make_scoped_call(Creator creator,
                         Destructor destructor,
                         Arguments&&... args){
-    auto res = creator(std::forward<Arguments>(args)...);
-    if(res){
-      throw std::runtime_error{SDL_GetError()};
-    }
+    creator(std::forward<Arguments>(args)...);
     auto deleter = [=](void*){ destructor(); };
     return std::unique_ptr<void*,decltype(deleter)>(nullptr, deleter);
   }

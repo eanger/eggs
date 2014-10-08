@@ -6,7 +6,6 @@ using namespace std;
 
 int main(){
   cout << "Hello, world!" << endl;
-
-  return eggs::start_engine();
+  eggs::start_engine();
 }
 

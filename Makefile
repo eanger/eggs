@@ -1,11 +1,12 @@
 
 SRCS= \
 	  engine.cpp \
+	  screen.cpp \
 	  main.cpp
 
-INC=-I/home/Eric/.local/include
+INC=
 LDFLAGS=
-LIBS=-L/home/Eric/.local/lib -lSDL2
+LIBS=-lncurses
 
 TARGET=eggs
 
