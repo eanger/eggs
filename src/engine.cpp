@@ -13,8 +13,8 @@ namespace eggs {
 void start_engine() {
   Screen screen;
   World world;
-  uint xloc = 0;
-  uint yloc = 0;
+  unsigned int xloc = 0;
+  unsigned int yloc = 0;
   for(;;){
     auto key = get_key_pressed();
     if(key == 'q'){ return; }

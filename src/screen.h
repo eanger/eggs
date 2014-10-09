@@ -7,6 +7,6 @@ struct Screen{
   Screen();
   ~Screen();
   void update();
-  void draw_char_at(const cchar_t& icon, uint y, uint x);
+  void draw_char_at(const cchar_t& icon, unsigned int y, unsigned int x);
 };
 }

@@ -7,7 +7,8 @@
 
 namespace eggs {
 
-Entity::Entity(uint x, uint y, wchar_t icon_char){
+Entity::Entity(unsigned int y, unsigned int x, wchar_t icon_char) : 
+  y_{y}, x_{x} {
   setcchar(&icon_,
            &icon_char,
            0/* default attrs */,

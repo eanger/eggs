@@ -23,7 +23,7 @@ void World::draw(Screen* screen){
   }
 }
 
-void World::add_entity(uint y, uint x, wchar_t icon_char){
+void World::add_entity(unsigned int y, unsigned int x, wchar_t icon_char){
   auto entity = std::unique_ptr<Entity>(new Entity(y, x, icon_char));
   entities_.push_back(std::move(entity));
 }

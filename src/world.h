@@ -12,6 +12,6 @@ class World {
   public:
   void update();
   void draw(Screen* screen);
-  void add_entity(uint x, uint y, wchar_t icon_char);
+  void add_entity(unsigned int y, unsigned int x, wchar_t icon_char);
 };
 }

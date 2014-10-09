@@ -5,11 +5,11 @@
 namespace eggs {
 struct Screen;
 class Entity {
-  uint x_, y_;
+  unsigned int y_, x_;
   cchar_t icon_;
 
   public:
-  Entity(uint x, uint y, wchar_t icon_char);
+  Entity(unsigned int y, unsigned int x, wchar_t icon_char);
   void update();
   void draw(Screen* screen);
 };
