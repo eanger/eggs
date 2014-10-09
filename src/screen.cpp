@@ -32,11 +32,11 @@ Screen::~Screen(){
 }
 
 void Screen::update(){
-  auto val = L"F";
-  cchar_t out;
-  setcchar(&out, val, 0/* default attrs */, 0 /* default color */, nullptr);
-  mvadd_wch(0,0,&out);
   refresh();
+}
+
+void Screen::draw_char_at(const cchar_t& icon, uint y, uint x){
+  mvadd_wch(y, x, &icon);
 }
 
 }

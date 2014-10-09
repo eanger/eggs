@@ -3,6 +3,8 @@ SRCS= \
 	  engine.cpp \
 	  screen.cpp \
 	  input.cpp \
+	  entity.cpp \
+	  world.cpp \
 	  main.cpp
 
 INC=
