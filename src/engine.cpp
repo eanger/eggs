@@ -1,7 +1,9 @@
 #include <iostream>
 
-#include "engine.h"
 #include "screen.h"
+#include "input.h"
+
+#include "engine.h"
 
 using namespace std;
 
@@ -9,7 +11,11 @@ namespace eggs {
 
 void start_engine() {
   Screen screen;
-  screen.update();
+  for(;;){
+    auto key = get_key_pressed();
+    if(key == 'q'){ return; }
+    screen.update();
+  }
 }
 
 }

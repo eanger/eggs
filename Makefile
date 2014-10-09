@@ -2,11 +2,12 @@
 SRCS= \
 	  engine.cpp \
 	  screen.cpp \
+	  input.cpp \
 	  main.cpp
 
 INC=
 LDFLAGS=
-LIBS=-lncurses
+LIBS=-lncursesw
 
 TARGET=eggs
 
