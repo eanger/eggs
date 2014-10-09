@@ -10,7 +10,7 @@ class World {
   std::vector<std::unique_ptr<Entity>> entities_;
 
   public:
-  void update();
+  void update(int key_pressed);
   void draw(Screen* screen);
   void add_entity(unsigned int y, unsigned int x, wchar_t icon_char);
 };

@@ -18,10 +18,7 @@ void start_engine() {
   for(;;){
     auto key = get_key_pressed();
     if(key == 'q'){ return; }
-    else {
-      world.add_entity(++yloc,++xloc,L'9');
-    }
-    world.update();
+    world.update(key);
     world.draw(&screen);
     screen.update();
   }
