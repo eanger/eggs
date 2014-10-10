@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <random>
 
 #include "entity.h"
 
@@ -7,13 +8,34 @@
 
 using namespace std;
 
+namespace {
+const unsigned int kWorldWidth = 20;
+const unsigned int kWorldHeight = 20;
+}
+
 namespace eggs {
 
 struct Screen;
 
+World::World() {
+  random_device rd;
+  default_random_engine eng(rd());
+  uniform_int_distribution<int> dist(0,1);
+  for(unsigned int i = 0; i < kWorldWidth; ++i){
+    for(unsigned int j = 0; j < kWorldHeight; ++j){
+      if(dist(eng)){
+        add_entity(j, i, L'@');
+      }
+    }
+  }
+}
+
 void World::update(int key_pressed) {
-  static unsigned int yloc = 0, xloc = 0;
-  add_entity(++yloc, ++xloc, (wchar_t) key_pressed);
+  if(key_pressed == L'd'){
+    const auto& last = entities_.back();
+    mvdelch(last->y_, last->x_);
+    entities_.pop_back();
+  }
   for(auto& entity : entities_){
     entity->update();
   }
