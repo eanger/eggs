@@ -3,3 +3,5 @@ game
 game.exe
 eggs.exe
 *.stackdump
+logs
+eggs
