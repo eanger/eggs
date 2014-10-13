@@ -1,12 +1,24 @@
 #include <clocale>
 #include <stdexcept>
 
+#ifndef _XOPEN_SOURCE_EXTENDED
 #define _XOPEN_SOURCE_EXTENDED
+#endif
 #include <ncursesw/ncurses.h>
 
 #include "screen.h"
 
 namespace eggs{
+
+void Screen::clear() {
+  erase();
+}
+
+void Screen::print_line_at(const std::string& line,
+                           unsigned int y,
+                           unsigned int x) {
+  mvprintw(y, x, line.c_str());
+}
 
 Screen::Screen(){
   if(setlocale(LC_ALL, "") == nullptr){ // set unicode locale
@@ -23,6 +35,9 @@ Screen::Screen(){
   }
   if(keypad(stdscr, true) == ERR){ // handle FN/arrows like regular keys 
     throw std::runtime_error("Cannot turn on keypad handling");
+  }
+  if(curs_set(0) == ERR){ // hide cursor
+    throw std::runtime_error("Cannot hide cursor");
   }
 }
 

@@ -5,14 +5,33 @@
 
 #include "entity.h"
 
+namespace {
+const unsigned int kWorldWidth = 22;
+const unsigned int kWorldHeight = 22;
+const unsigned int kPlayerStartLoc = kWorldHeight / 2;
+const unsigned int kTotalMoves = 100;
+}
+
 namespace eggs {
 class World {
-  std::vector<std::unique_ptr<Entity>> entities_;
+  enum class Tile{
+    TOKEN,
+    PLAYER,
+    WALL,
+    EMPTY
+  };
+  std::array<std::array<Tile, kWorldHeight>, kWorldWidth> map_;
+  Entity token_;
+  Entity player_;
+  Entity wall_;
+  Entity empty_;
+  unsigned int player_x_, player_y_;
+  unsigned int score_;
+  unsigned int moves_left_;
 
   public:
   World();
-  void update(int key_pressed);
+  bool update(int key_pressed);
   void draw(Screen* screen);
-  void add_entity(unsigned int y, unsigned int x, wchar_t icon_char);
 };
 }
