@@ -14,12 +14,13 @@ void start_engine() {
   Screen screen;
   World world;
   bool gameOver = false;
+  int key;
   while(!gameOver){
-    auto key = get_key_pressed();
     gameOver = world.update(key);
     screen.clear();
     world.draw(&screen);
     screen.update();
+    key = get_key_pressed();
   }
 }
 
