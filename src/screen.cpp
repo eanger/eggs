@@ -5,6 +5,7 @@
 #define _XOPEN_SOURCE_EXTENDED
 #endif
 #include <ncursesw/ncurses.h>
+#include <ncursesw/panel.h>
 
 #include "screen.h"
 
@@ -18,6 +19,12 @@ void Screen::print_line_at(const std::string& line,
                            unsigned int y,
                            unsigned int x) {
   mvprintw(y, x, line.c_str());
+}
+
+void Screen::print_line_centered(const std::string& line, unsigned int y) {
+  int row, col;
+  getmaxyx(stdscr, row, col);
+  print_line_at(line, y, (col - line.length()) / 2);
 }
 
 Screen::Screen(){

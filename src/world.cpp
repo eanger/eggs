@@ -120,9 +120,9 @@ void World::draw(Screen* screen){
   }
   stringstream score_str, moves_str;
   score_str << "Score: " << score_;
-  screen->print_line_at(score_str.str(), kWorldHeight, 0);
+  screen->print_line_centered(score_str.str(), kWorldHeight);
   moves_str << "Moves Left: " << moves_left_;
-  screen->print_line_at(moves_str.str(), kWorldHeight + 1 /* below score */, 0);
+  screen->print_line_centered(moves_str.str(), kWorldHeight + 1 /* below score */);
 }
 
 }

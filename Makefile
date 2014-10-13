@@ -9,12 +9,11 @@ SRCS= \
 
 INC=
 LDFLAGS=
-LIBS=-lncursesw
+LIBS=-lpanelw -lncursesw
 
 TARGET=eggs
 
 ###########################################################
-CXX=clang++
 CXXFLAGS=-g -O0
 CPPFLAGS=-Wall -Wextra -std=c++1y -Isrc $(INC)
 LDLIBS=$(LIBS)
