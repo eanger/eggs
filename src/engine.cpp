@@ -13,14 +13,16 @@ namespace eggs {
 void start_engine() {
   Screen screen;
   World world;
-  bool gameOver = false;
-  int key;
+  bool gameOver = world.update(0 /* no key */);
+  screen.clear();
+  world.draw(&screen);
+  screen.update();
   while(!gameOver){
+    auto key = get_key_pressed();
     gameOver = world.update(key);
     screen.clear();
     world.draw(&screen);
     screen.update();
-    key = get_key_pressed();
   }
 }
 
