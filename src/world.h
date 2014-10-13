@@ -20,11 +20,18 @@ class World {
     WALL,
     EMPTY
   };
+  enum class State{
+    START,
+    PLAYING,
+    GAME_OVER
+  };
+
   std::array<std::array<Tile, kWorldHeight>, kWorldWidth> map_;
   Entity token_;
   Entity player_;
   Entity wall_;
   Entity empty_;
+  State state_;
   unsigned int player_x_, player_y_;
   unsigned int score_;
   unsigned int moves_left_;

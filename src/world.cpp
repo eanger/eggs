@@ -25,6 +25,7 @@ World::World() :
     player_{L'@'},
     wall_{L'#'},
     empty_{L' '},
+    state_{State::START},
     player_x_{kPlayerStartLoc},
     player_y_{kPlayerStartLoc},
     score_{0},
@@ -48,53 +49,62 @@ World::World() :
 }
 
 bool World::update(int key_pressed) {
-  int xdiff = 0;
-  int ydiff = 0;
-  switch(key_pressed){
-    case L'w':
-      if(player_y_ == 1){ // at top wall
-        return kKeepPlaying;
-      }
-      ydiff = -1;
-      break;
-    case L's':
-      if(player_y_ == kWorldHeight - 2){ // at bottom wall
-        return kKeepPlaying;
-      }
-      ydiff = 1;
-      break;
-    case L'a':
-      if(player_x_ == 1){ // at left wall
-        return kKeepPlaying;
-      }
-      xdiff = -1;
-      break;
-    case L'd':
-      if(player_x_ == kWorldWidth - 2){ // at right wall
-        return kKeepPlaying;
-      }
-      xdiff = 1;
-      break;
-    case L'q':
-      return kGameOver;
-      break;
-    default:
+  switch(state_){
+    case State::START:
+      state_ = State::PLAYING;
       return kKeepPlaying;
+    case State::PLAYING:
+    {
+      int xdiff = 0;
+      int ydiff = 0;
+      switch(key_pressed){
+        case L'w':
+          if(player_y_ == 1){ // at top wall
+            return kKeepPlaying;
+          }
+          ydiff = -1;
+          break;
+        case L's':
+          if(player_y_ == kWorldHeight - 2){ // at bottom wall
+            return kKeepPlaying;
+          }
+          ydiff = 1;
+          break;
+        case L'a':
+          if(player_x_ == 1){ // at left wall
+            return kKeepPlaying;
+          }
+          xdiff = -1;
+          break;
+        case L'd':
+          if(player_x_ == kWorldWidth - 2){ // at right wall
+            return kKeepPlaying;
+          }
+          xdiff = 1;
+          break;
+        case L'q':
+          state_ = State::GAME_OVER;
+        default:
+          return kKeepPlaying;
+      }
+      --moves_left_;
+      auto new_x = player_x_ + xdiff;
+      auto new_y = player_y_ + ydiff;
+      if(map_[new_y][new_x] == Tile::TOKEN){
+        ++score_;
+      }
+      map_[new_y][new_x] = Tile::PLAYER;
+      map_[player_y_][player_x_] = Tile::EMPTY;
+      player_x_ = new_x;
+      player_y_ = new_y;
+      if(moves_left_ == 0){
+        state_ = State::GAME_OVER;
+      }
+      return kKeepPlaying;
+    }
+    case State::GAME_OVER:
+      return kGameOver;
   }
-  --moves_left_;
-  auto new_x = player_x_ + xdiff;
-  auto new_y = player_y_ + ydiff;
-  if(map_[new_y][new_x] == Tile::TOKEN){
-    ++score_;
-  }
-  map_[new_y][new_x] = Tile::PLAYER;
-  map_[player_y_][player_x_] = Tile::EMPTY;
-  player_x_ = new_x;
-  player_y_ = new_y;
-  if(moves_left_ == 0){
-    return kGameOver;
-  }
-  return kKeepPlaying;
 }
 
 void World::draw(Screen* screen){
