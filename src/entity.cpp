@@ -1,9 +1,5 @@
-#ifndef _XOPEN_SOURCE_EXTENDED
-#define _XOPEN_SOURCE_EXTENDED
-#endif
-#include <ncursesw/ncurses.h>
-
 #include "screen.h"
+#include "icon.h"
 
 #include "entity.h"
 

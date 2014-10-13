@@ -6,6 +6,7 @@
 
 #include "entity.h"
 #include "screen.h"
+#include "icon.h"
 
 #include "world.h"
 
@@ -110,7 +111,7 @@ bool World::update(int key_pressed) {
 void World::draw(Screen* screen){
   for(unsigned int row = 0; row < kWorldHeight; ++row){
     for(unsigned int col = 0; col < kWorldWidth; ++col){
-      cchar_t icon;
+      Icon icon;
       switch(map_[row][col]){
         case Tile::TOKEN:
           icon = token_.icon_;
@@ -125,7 +126,7 @@ void World::draw(Screen* screen){
           icon = empty_.icon_;
           break;
       }
-      screen->draw_char_at(icon, row, col);
+      screen->draw_icon_at(icon, row, col);
     }
   }
   stringstream score_str, moves_str;

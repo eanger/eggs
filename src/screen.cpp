@@ -7,6 +7,8 @@
 #include <ncursesw/ncurses.h>
 #include <ncursesw/panel.h>
 
+#include "icon.h"
+
 #include "screen.h"
 
 namespace eggs{
@@ -57,7 +59,7 @@ void Screen::update(){
   refresh();
 }
 
-void Screen::draw_char_at(const cchar_t& icon, unsigned int y, unsigned int x){
+void Screen::draw_icon_at(const Icon& icon, unsigned int y, unsigned int x){
   mvadd_wch(y, x, &icon);
 }
 
