@@ -19,8 +19,6 @@ const bool kKeepPlaying = false;
 
 namespace eggs {
 
-struct Screen;
-
 World::World() : 
     token_{L'.'},
     player_{L'@'},
