@@ -103,6 +103,8 @@ bool World::update(int key_pressed) {
     }
     case State::GAME_OVER:
       return kGameOver;
+    default:
+      throw runtime_error("Invalid game state");
   }
 }
 
