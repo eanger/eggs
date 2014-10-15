@@ -19,12 +19,20 @@ CPPFLAGS=-Wall -Wextra -std=c++1y -Isrc $(INC)
 LDLIBS=$(LIBS)
 
 SRC=$(addprefix src/,$(SRCS))
-OBJ=$(subst .cpp,.o,$(SRC))
+OBJ=$(patsubst src/%.cpp,obj/%.o,$(SRC))
+
+TAGS=src/tags
 
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CXX) $(LDFLAGS) -o $(TARGET) $(OBJ) $(LDLIBS)
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
+tags: $(TAGS)
+
+$(TAGS): $(SRC)
+	( cd src && ctags * && cd - )
+	
 
 .PHONY: clean
 clean:

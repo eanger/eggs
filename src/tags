@@ -6,50 +6,56 @@
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 Entity	entity.cpp	/^Entity::Entity(wchar_t icon_char) {$/;"	f	class:eggs::Entity
 Entity	entity.h	/^struct Entity {$/;"	s	namespace:eggs
+Icon	icon.h	/^struct Icon : public cchar_t {};$/;"	s	namespace:eggs
 PLAYER	world.h	/^    PLAYER,$/;"	m	class:eggs::World::Tile
+PLAYING	world.h	/^    PLAYING,$/;"	m	class:eggs::World::State
+START	world.h	/^    START,$/;"	m	class:eggs::World::State
 Screen	screen.cpp	/^Screen::Screen(){$/;"	f	class:eggs::Screen
 Screen	screen.h	/^struct Screen{$/;"	s	namespace:eggs
+State	world.h	/^  enum class State{$/;"	c	class:eggs::World
 TOKEN	world.h	/^    TOKEN,$/;"	m	class:eggs::World::Tile
 Tile	world.h	/^  enum class Tile{$/;"	c	class:eggs::World
 WALL	world.h	/^    WALL,$/;"	m	class:eggs::World::Tile
 World	world.cpp	/^World::World() : $/;"	f	class:eggs::World
 World	world.h	/^class World {$/;"	c	namespace:eggs
-_XOPEN_SOURCE_EXTENDED	entity.cpp	2;"	d	file:
-_XOPEN_SOURCE_EXTENDED	entity.h	3;"	d
+_XOPEN_SOURCE_EXTENDED	icon.h	4;"	d
 _XOPEN_SOURCE_EXTENDED	input.cpp	2;"	d	file:
 _XOPEN_SOURCE_EXTENDED	screen.cpp	5;"	d	file:
-_XOPEN_SOURCE_EXTENDED	screen.h	4;"	d
 clear	screen.cpp	/^void Screen::clear() {$/;"	f	class:eggs::Screen
 draw	world.cpp	/^void World::draw(Screen* screen){$/;"	f	class:eggs::World
-draw_char_at	screen.cpp	/^void Screen::draw_char_at(const cchar_t& icon, unsigned int y, unsigned int x){$/;"	f	class:eggs::Screen
+draw_icon_at	screen.cpp	/^void Screen::draw_icon_at(const Icon& icon, unsigned int y, unsigned int x){$/;"	f	class:eggs::Screen
 eggs	engine.cpp	/^namespace eggs {$/;"	n	file:
 eggs	engine.h	/^namespace eggs{$/;"	n
 eggs	entity.cpp	/^namespace eggs {$/;"	n	file:
 eggs	entity.h	/^namespace eggs {$/;"	n
+eggs	icon.h	/^namespace eggs{$/;"	n
 eggs	input.cpp	/^namespace eggs {$/;"	n	file:
 eggs	input.h	/^namespace eggs {$/;"	n
 eggs	screen.cpp	/^namespace eggs{$/;"	n	file:
 eggs	screen.h	/^namespace eggs{$/;"	n
+eggs	state.h	/^namespace eggs{$/;"	n
 eggs	world.cpp	/^namespace eggs {$/;"	n	file:
 eggs	world.h	/^namespace eggs {$/;"	n
 empty_	world.h	/^  Entity empty_;$/;"	m	class:eggs::World
 get_key_pressed	input.cpp	/^int get_key_pressed(){$/;"	f	namespace:eggs
-icon_	entity.h	/^  cchar_t icon_;$/;"	m	struct:eggs::Entity
-kGameOver	world.cpp	/^const bool kGameOver = true;$/;"	m	namespace:__anon2	file:
-kKeepPlaying	world.cpp	/^const bool kKeepPlaying = false;$/;"	m	namespace:__anon2	file:
-kPlayerStartLoc	world.h	/^const unsigned int kPlayerStartLoc = kWorldHeight \/ 2;$/;"	m	namespace:__anon1
-kTotalMoves	world.h	/^const unsigned int kTotalMoves = 100;$/;"	m	namespace:__anon1
-kWorldHeight	world.h	/^const unsigned int kWorldHeight = 22;$/;"	m	namespace:__anon1
-kWorldWidth	world.h	/^const unsigned int kWorldWidth = 22;$/;"	m	namespace:__anon1
-main	main.cpp	/^int main(){$/;"	f
+icon_	entity.h	/^  Icon icon_;$/;"	m	struct:eggs::Entity
+kGameOver	world.cpp	/^const bool kGameOver = true;$/;"	m	namespace:__anon1	file:
+kKeepPlaying	world.cpp	/^const bool kKeepPlaying = false;$/;"	m	namespace:__anon1	file:
+kPlayerStartLoc	world.h	/^const unsigned int kPlayerStartLoc = kWorldHeight \/ 2;$/;"	m	namespace:__anon2
+kTotalMoves	world.h	/^const unsigned int kTotalMoves = 100;$/;"	m	namespace:__anon2
+kWorldHeight	world.h	/^const unsigned int kWorldHeight = 22;$/;"	m	namespace:__anon2
+kWorldWidth	world.h	/^const unsigned int kWorldWidth = 22;$/;"	m	namespace:__anon2
+main	main.cpp	/^int main(int argc, char* argv[]){$/;"	f
 map_	world.h	/^  std::array<std::array<Tile, kWorldHeight>, kWorldWidth> map_;$/;"	m	class:eggs::World
 moves_left_	world.h	/^  unsigned int moves_left_;$/;"	m	class:eggs::World
 player_	world.h	/^  Entity player_;$/;"	m	class:eggs::World
 player_x_	world.h	/^  unsigned int player_x_, player_y_;$/;"	m	class:eggs::World
 player_y_	world.h	/^  unsigned int player_x_, player_y_;$/;"	m	class:eggs::World
 print_line_at	screen.cpp	/^void Screen::print_line_at(const std::string& line,$/;"	f	class:eggs::Screen
+print_line_centered	screen.cpp	/^void Screen::print_line_centered(const std::string& line, unsigned int y) {$/;"	f	class:eggs::Screen
 score_	world.h	/^  unsigned int score_;$/;"	m	class:eggs::World
 start_engine	engine.cpp	/^void start_engine() {$/;"	f	namespace:eggs
+state_	world.h	/^  State state_;$/;"	m	class:eggs::World
 token_	world.h	/^  Entity token_;$/;"	m	class:eggs::World
 update	screen.cpp	/^void Screen::update(){$/;"	f	class:eggs::Screen
 update	world.cpp	/^bool World::update(int key_pressed) {$/;"	f	class:eggs::World
