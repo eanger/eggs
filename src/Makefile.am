@@ -5,6 +5,7 @@ eggs_SOURCES = \
 			   input.cpp \
 			   entity.cpp \
 			   world.cpp \
+			   state.cpp \
 			   main.cpp
 
 eggs_CPPFLAGS = $(PANELW_CFLAGS) $(NCURSESW_CFLAGS)
