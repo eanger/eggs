@@ -1,5 +1,6 @@
 AC_INIT([eggs], [0.1], [eanger@gmail.com])
 AC_CONFIG_AUX_DIR([config])
+AC_CONFIG_SRCDIR([src/main.cpp])
 AM_INIT_AUTOMAKE([foreign -Wall -Werror])
 AC_CONFIG_MACRO_DIR([m4])
 AM_PROG_AR
@@ -42,5 +43,5 @@ AC_ARG_WITH([panelw-lib-path],
 AC_SUBST([PANELW_LIBS])
 
 AC_CONFIG_HEADERS([config/config.h])
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile])
 AC_OUTPUT
