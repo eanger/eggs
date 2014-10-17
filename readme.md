@@ -38,7 +38,7 @@ Maybe scripting's function is just to create game objects. The engine then perfo
 # To Do
 * Game loop: input -> update -> "render"(draw/refresh)
 * Use std::chrono::high_resolution_clock: now() for cur time, duration_cast() for difference
-* nodelay(stdscr, true): get_wch returns ERR if no key is ready.
+* ~~nodelay(stdscr, true): get_wch returns ERR if no key is ready.~~
 * Render knows about objects and locations. Update doesn't actually do anything with scene.
 * Maximum refresh rate (300 hz?) 
 * Logical map (ie 50 x 50) plus view frame into game (boardered window).

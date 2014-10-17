@@ -48,6 +48,10 @@ Screen::Screen(){
   if(curs_set(0) == ERR){ // hide cursor
     throw std::runtime_error("Cannot hide cursor");
   }
+  // Nonblocking read of keys. get_wch() returns ERR if nothing pressed.
+  if(nodelay(stdscr, true) == ERR){ 
+    throw std::runtime_error("Cannot set nonblocking get_wch()");
+  }
 }
 
 

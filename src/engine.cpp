@@ -18,6 +18,7 @@ void start_engine() {
   world.draw(&screen);
   screen.update();
   while(!gameOver){
+    // key == -1 means no key pressed
     auto key = get_key_pressed();
     gameOver = world.update(key);
     screen.clear();
