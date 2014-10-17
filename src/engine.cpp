@@ -8,22 +8,22 @@
 
 using namespace std;
 
+namespace {
+const unsigned int kScreenWidth = 640;
+const unsigned int kScreenHeight = 480;
+}
+
 namespace eggs {
 
 void start_engine() {
-  Screen screen;
+  Screen screen{kScreenWidth, kScreenHeight};
   World world;
-  bool gameOver = world.update(0 /* no key */);
-  screen.clear();
-  world.draw(&screen);
-  screen.update();
+  bool gameOver = false;
   while(!gameOver){
     // key == -1 means no key pressed
-    auto key = get_key_pressed();
+    auto key = get_input_action(screen);
     gameOver = world.update(key);
-    screen.clear();
-    world.draw(&screen);
-    screen.update();
+    screen.render(world);
   }
 }
 

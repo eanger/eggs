@@ -1,5 +1,16 @@
 #pragma once
 
 namespace eggs {
-int get_key_pressed();
+class Screen;
+
+enum class InputAction{
+  NONE,
+  QUIT,
+  LEFT,
+  RIGHT,
+  UP,
+  DOWN
+};
+
+InputAction get_input_action(Screen& screen);
 }

@@ -1,70 +1,95 @@
 #include <clocale>
 #include <stdexcept>
+#include <sstream>
 
-#ifndef _XOPEN_SOURCE_EXTENDED
-#define _XOPEN_SOURCE_EXTENDED
-#endif
-#include <ncursesw/ncurses.h>
-#include <ncursesw/panel.h>
+#include <SFML/Graphics.hpp>
 
 #include "icon.h"
+#include "world.h"
 
 #include "screen.h"
 
-namespace eggs{
+using namespace std;
 
-void Screen::clear() {
-  erase();
+namespace {
+const unsigned int kTileSize = 10;
 }
+
+namespace eggs{
 
 void Screen::print_line_at(const std::string& line,
                            unsigned int y,
                            unsigned int x) {
-  mvprintw(y, x, line.c_str());
+  sf::Text text{line, font_};
+  text.setPosition(x, y);
+  window_.draw(text);
 }
 
 void Screen::print_line_centered(const std::string& line, unsigned int y) {
-  int row, col;
-  getmaxyx(stdscr, row, col);
-  print_line_at(line, y, (col - line.length()) / 2);
+  sf::Text text{line, font_};
+  auto bounds = text.getGlobalBounds();
+  auto size = window_.getSize();
+  print_line_at(line, (size.x - bounds.width) / 2, y);
 }
 
-Screen::Screen(){
-  if(setlocale(LC_ALL, "") == nullptr){ // set unicode locale
-    throw std::runtime_error("Cannot set locale.");
-  }
-  if(initscr() == nullptr){ // start up ncurses display
-    throw std::runtime_error("Cannot initialize ncurses.");
-  }
-  if(cbreak() == ERR){  // disable input buffering and control character processing
-    throw std::runtime_error("Cannot disable input buffering");
-  }
-  if(noecho() == ERR){ // do not display typed characters to the screen
-    throw std::runtime_error("Cannot turn off echo");
-  }
-  if(keypad(stdscr, true) == ERR){ // handle FN/arrows like regular keys 
-    throw std::runtime_error("Cannot turn on keypad handling");
-  }
-  if(curs_set(0) == ERR){ // hide cursor
-    throw std::runtime_error("Cannot hide cursor");
-  }
-  // Nonblocking read of keys. get_wch() returns ERR if nothing pressed.
-  if(nodelay(stdscr, true) == ERR){ 
-    throw std::runtime_error("Cannot set nonblocking get_wch()");
+Screen::Screen(unsigned int width, unsigned int height): 
+  window_{sf::VideoMode(width, height), "EGGS"},
+  token_{{kTileSize,kTileSize}},
+  player_{{kTileSize,kTileSize}},
+  wall_{{kTileSize,kTileSize}} {
+
+  token_.setFillColor(sf::Color::White);
+  player_.setFillColor(sf::Color::Red);
+  wall_.setFillColor(sf::Color::Cyan);
+  if(!font_.loadFromFile(ASSETS_DIR "/Sail-Regular.otf")){
+    //throw std::runtime_error("Unable to load font");
   }
 }
 
+void Screen::render(const World& world){
+  window_.clear(sf::Color::Black);
+  // Do the actual rendering of world contents
+  unsigned int start_x = 0, start_y = 0;
+  for(const auto& row : world.map_){
+    for(const auto& tile : row){
+      sf::Shape* shape{nullptr};
+      switch(tile){
+        case World::Tile::TOKEN:
+          shape = &token_;
+          break;
+        case World::Tile::PLAYER:
+          shape = &player_;
+          break;
+        case World::Tile::WALL:
+          shape = &wall_;
+          break;
+        case World::Tile::EMPTY:
+          break;
+      }
+      if(shape){
+        shape->setPosition(start_x, start_y);
+        window_.draw(*shape);
+      }
+      start_x += kTileSize;
+    }
+    start_y += kTileSize;
+    start_x = 0;
+  }
+  stringstream score_str;
+  score_str << "Score: " 
+            << world.score_ 
+            << "\nMoves Left: " 
+            << world.moves_left_;
+  print_line_at(score_str.str(), kTileSize * world.map_.size(), 0);
 
-Screen::~Screen(){
-  endwin(); 
-}
-
-void Screen::update(){
-  refresh();
+  window_.display();
 }
 
 void Screen::draw_icon_at(const Icon& icon, unsigned int y, unsigned int x){
-  mvadd_wch(y, x, &icon);
+}
+
+sf::RenderWindow& Screen::get_window() {
+  return window_;
 }
 
 }

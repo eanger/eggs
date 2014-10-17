@@ -36,6 +36,7 @@ Maybe scripting's function is just to create game objects. The engine then perfo
 * Script to describe 
 
 # To Do
+* Switch to sfml.
 * Game loop: input -> update -> "render"(draw/refresh)
 * Use std::chrono::high_resolution_clock: now() for cur time, duration_cast() for difference
 * ~~nodelay(stdscr, true): get_wch returns ERR if no key is ready.~~

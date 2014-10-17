@@ -1,10 +1,15 @@
 #pragma once
 
-#ifndef _XOPEN_SOURCE_EXTENDED
-#define _XOPEN_SOURCE_EXTENDED
-#endif
-#include <ncursesw/ncurses.h>
+#include <memory>
+
+namespace sf{
+class Shape;
+}
 
 namespace eggs{
-struct Icon : public cchar_t {};
+class Icon {
+  std::unique_ptr<sf::Shape> shape_;
+  public:
+    Icon();
+};
 }

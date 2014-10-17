@@ -4,9 +4,8 @@
 #include <sstream>
 #include <string>
 
-#include "entity.h"
-#include "screen.h"
 #include "icon.h"
+#include "input.h"
 
 #include "world.h"
 
@@ -20,10 +19,6 @@ const bool kKeepPlaying = false;
 namespace eggs {
 
 World::World() : 
-    token_{L'.'},
-    player_{L'@'},
-    wall_{L'#'},
-    empty_{L' '},
     state_{State::START},
     player_x_{kPlayerStartLoc},
     player_y_{kPlayerStartLoc},
@@ -47,7 +42,7 @@ World::World() :
   map_[kPlayerStartLoc][kPlayerStartLoc] = Tile::PLAYER;
 }
 
-bool World::update(int key_pressed) {
+bool World::update(InputAction action) {
   switch(state_){
     case State::START:
       state_ = State::PLAYING;
@@ -56,32 +51,32 @@ bool World::update(int key_pressed) {
     {
       int xdiff = 0;
       int ydiff = 0;
-      switch(key_pressed){
-        case L'w':
+      switch(action){
+        case InputAction::UP:
           if(player_y_ == 1){ // at top wall
             return kKeepPlaying;
           }
           ydiff = -1;
           break;
-        case L's':
+        case InputAction::DOWN:
           if(player_y_ == kWorldHeight - 2){ // at bottom wall
             return kKeepPlaying;
           }
           ydiff = 1;
           break;
-        case L'a':
+        case InputAction::LEFT:
           if(player_x_ == 1){ // at left wall
             return kKeepPlaying;
           }
           xdiff = -1;
           break;
-        case L'd':
+        case InputAction::RIGHT:
           if(player_x_ == kWorldWidth - 2){ // at right wall
             return kKeepPlaying;
           }
           xdiff = 1;
           break;
-        case L'q':
+        case InputAction::QUIT:
           state_ = State::GAME_OVER;
         default:
           return kKeepPlaying;
@@ -106,34 +101,6 @@ bool World::update(int key_pressed) {
     default:
       throw runtime_error("Invalid game state");
   }
-}
-
-void World::draw(Screen* screen){
-  for(unsigned int row = 0; row < kWorldHeight; ++row){
-    for(unsigned int col = 0; col < kWorldWidth; ++col){
-      Icon icon;
-      switch(map_[row][col]){
-        case Tile::TOKEN:
-          icon = token_.icon_;
-          break;
-        case Tile::PLAYER:
-          icon = player_.icon_;
-          break;
-        case Tile::WALL:
-          icon = wall_.icon_;
-          break;
-        case Tile::EMPTY:
-          icon = empty_.icon_;
-          break;
-      }
-      screen->draw_icon_at(icon, row, col);
-    }
-  }
-  stringstream score_str, moves_str;
-  score_str << "Score: " << score_;
-  screen->print_line_centered(score_str.str(), kWorldHeight);
-  moves_str << "Moves Left: " << moves_left_;
-  screen->print_line_centered(moves_str.str(), kWorldHeight + 1 /* below score */);
 }
 
 }
