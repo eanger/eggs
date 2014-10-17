@@ -10,6 +10,16 @@ City-builder style game. Legion of workers that take tasks off a queue and compl
 
 The field is grid-based and work is assigned by the control system and put into place by construction workers. Office workers have performance characteristics affected by environment that rakes in the money for the company.
 
+* Big empty space, with screen as view into it.
+* Different keys for different mouse tools: walls, desks, chairs, etc.
+* Click and drag to draw things.
+* Each clicked thing will put a new "tasks" into a queue, and workers will have to go make it.
+* Each thing will take time/materials to make, modulated by character skill (generated randomly?)
+* Start with a set of workers, but can buy/make more.
+* Set of workers that sit at desks and do work. Need food/orders/breaks/bathrooms/etc.
+* Make "rooms" from items in it? Are things rejected from rooms (ie bathrooms don't work if you have no privacy?)
+* Maybe like sim tower, but you have to build the tower and the workers?
+
 ## Scripting
 
 The goal is to make the engine in C++ (i.e. rendering, object interactions), but with behavior/logic implemented as python scripts. This should make game logic design much quicker, with the generic stuff (drawing and rendering) implemented in fast languages while the logic stuff can be handled in a more exploratory way. Hard-coding decisions into compiled logic might just obscure gameplay.
@@ -26,17 +36,8 @@ Maybe scripting's function is just to create game objects. The engine then perfo
 * Script to describe 
 
 # To Do
-* ~~Main file to start up the game engine.~~
-* ~~Infinite game loop, polling logic update, drawing, rendering.~~
-* Switch from SDL2 to SFML
-* Display fps
-    * Display text -> sdl ttf still borked
-    * ~~calculate fps~~
-    * ~~display fps~~ -> stdout
-* Grid of locations (2d vector) updated and iterated
-    * Load tile graphics (8x8)
-    * Render a bunch to screen
-* Only draw subset of locations in screen
-* Calling out to python script for game logic.
-* Implement simple functionality, then parcel out to scripts when needed.
-* Set period to look for file updates (to see if scripts need to be reloaded)
+* Game loop: input -> update -> "render"(draw/refresh)
+* nodelay(stdscr, true): get_wch returns ERR if no key is ready.
+* Render knows about objects and locations. Update doesn't actually do anything with scene.
+* Maximum refresh rate (300 hz?) 
+* Logical map (ie 50 x 50) plus view frame into game (boardered window).
