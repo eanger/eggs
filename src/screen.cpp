@@ -41,7 +41,7 @@ Screen::Screen(unsigned int width, unsigned int height):
   token_.setFillColor(sf::Color::White);
   player_.setFillColor(sf::Color::Red);
   wall_.setFillColor(sf::Color::Cyan);
-  if(!font_.loadFromFile(ASSETS_DIR "/Sail-Regular.otf")){
+  if(!font_.loadFromFile("../assets/Sail-Regular.otf")){
     //throw std::runtime_error("Unable to load font");
   }
 }
