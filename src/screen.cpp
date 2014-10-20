@@ -42,11 +42,11 @@ Screen::Screen(unsigned int width, unsigned int height):
   token_.setFillColor(sf::Color::White);
   player_.setFillColor(sf::Color::Red);
   wall_.setFillColor(sf::Color::Cyan);
-	std::cout << BINDIR << std::endl;
 	string font_fname{BINDIR "/../assets/Sail-Regular.otf"};
   if(!font_.loadFromFile(font_fname)){
-    //throw std::runtime_error("Unable to load font");
+    throw std::runtime_error("Unable to load font");
   }
+  window_.setVerticalSyncEnabled(true); // turn on vsync
 }
 
 void Screen::render(const World& world){
@@ -84,11 +84,19 @@ void Screen::render(const World& world){
             << "\nMoves Left: " 
             << world.moves_left_;
   print_line_at(score_str.str(), kTileSize * world.map_.size(), 0);
+}
 
+void Screen::draw() {
   window_.display();
 }
 
 void Screen::draw_icon_at(const Icon& icon, unsigned int y, unsigned int x){
+}
+
+void Screen::draw_frame_time(float frame_time, const World& world){
+  stringstream frame_time_str;
+  frame_time_str << "Frame time: " << frame_time << "ms";
+  print_line_at(frame_time_str.str(), 0, kTileSize * world.map_.size());
 }
 
 sf::RenderWindow& Screen::get_window() {

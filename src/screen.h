@@ -20,5 +20,7 @@ class Screen{
     void print_line_at(const std::string& line, unsigned int y, unsigned int x);
     void print_line_centered(const std::string& line, unsigned int y);
     sf::RenderWindow& get_window();
+    void draw();
+    void draw_frame_time(float frame_time, const World& world);
 };
 }
