@@ -1,6 +1,7 @@
 #include <clocale>
 #include <stdexcept>
 #include <sstream>
+#include <iostream>
 
 #include <SFML/Graphics.hpp>
 
@@ -41,7 +42,9 @@ Screen::Screen(unsigned int width, unsigned int height):
   token_.setFillColor(sf::Color::White);
   player_.setFillColor(sf::Color::Red);
   wall_.setFillColor(sf::Color::Cyan);
-  if(!font_.loadFromFile("../assets/Sail-Regular.otf")){
+	std::cout << BINDIR << std::endl;
+	string font_fname{BINDIR "/../assets/Sail-Regular.otf"};
+  if(!font_.loadFromFile(font_fname)){
     //throw std::runtime_error("Unable to load font");
   }
 }
