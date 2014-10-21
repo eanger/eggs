@@ -1,7 +1,5 @@
 #include <iostream>
 
-#include <SFML/System/Clock.hpp>
-
 #include "../utils/easylogging++.h"
 #include "screen.h"
 #include "input.h"
