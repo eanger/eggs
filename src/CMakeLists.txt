@@ -12,6 +12,6 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2TTF REQUIRED)
 
 include_directories(${SDL2_INCLUDE_DIR} ${SDL2TTF_INCLUDE_DIR})
-target_link_libraries(eggs ${SDL2_LIBRARY} ${SDL2TTF_LIBRARIES})
+target_link_libraries(eggs ${SDL2_LIBRARY} ${SDL2TTFMAIN_LIBRARY})
 
 add_definitions(-DBINDIR="${CMAKE_CURRENT_BINARY_DIR}")

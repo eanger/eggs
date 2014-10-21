@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "SDL.h"
+#include "SDL_ttf.h"
 
 #include "icon.h"
 #include "world.h"
@@ -14,6 +15,7 @@ using namespace std;
 
 namespace {
 const int kTileSize = 10;
+const int kFontPtSize = 24;
 }
 
 namespace eggs{
@@ -21,27 +23,20 @@ namespace eggs{
 void Screen::print_line_at(const std::string& line,
                            unsigned int y,
                            unsigned int x) {
-  /*
-  sf::Text text{line, font_};
-  text.setPosition(x, y);
-  window_.draw(text);
-  */
-}
-
-void Screen::print_line_centered(const std::string& line, unsigned int y) {
-  /*
-  sf::Text text{line, font_};
-  auto bounds = text.getGlobalBounds();
-  auto size = window_.getSize();
-  print_line_at(line, (size.x - bounds.width) / 2, y);
-  */
+  auto surf = TTF_RenderUTF8_Shaded(font_, line.c_str(), text_color_, empty_);
+  SDL_Rect position{(int) x, (int) y, surf->w, surf->h};
+  auto texture = SDL_CreateTextureFromSurface(renderer_, surf);
+  SDL_RenderCopy(renderer_, texture, nullptr /* whole text texture */, &position);
+  SDL_DestroyTexture(texture);
+  SDL_FreeSurface(surf);
 }
 
 Screen::Screen(unsigned int width, unsigned int height) :
   token_{255, 255, 255, 0} /* white */,
   player_{255, 0, 0, 0} /* red */,
   wall_{0, 255, 255, 0} /* cyan */,
-  empty_{0, 0, 0, 0} /* black */
+  empty_{0, 0, 0, 0} /* black */,
+  text_color_{255, 255, 255, 0} /* white */
 {
   if(SDL_Init(SDL_INIT_EVERYTHING) != 0){
     throw runtime_error("Unable to init SDL2");
@@ -63,11 +58,15 @@ Screen::Screen(unsigned int width, unsigned int height) :
   if(renderer_ == nullptr){
     throw runtime_error("Unable to make a renderer");
   }
-	/*string font_fname{BINDIR "/../assets/Sail-Regular.otf"};
-  if(!font_.loadFromFile(font_fname)){
+
+  if(TTF_Init() == -1){
+    throw runtime_error("Unable to initialize SDL_ttf");
+  }
+
+  font_ = TTF_OpenFont(BINDIR "/../assets/Sail-Regular.otf", kFontPtSize);
+  if(font_ == nullptr){
     throw std::runtime_error("Unable to load font");
   }
-  */
 }
 
 void Screen::render(const World& world){
@@ -96,17 +95,6 @@ void Screen::render(const World& world){
         SDL_Rect rect{start_x, start_y, kTileSize, kTileSize};
         SDL_SetRenderDrawColor(renderer_, color->r, color->g, color->b, color->a);
         SDL_RenderFillRect(renderer_, &rect);
-        /*
-        auto surf = SDL_GetWindowSurface(window_);
-        SDL_FillRect(surf, &rect, SDL_MapRGB(surf->format, 
-                                             color->r,
-                                             color->g,
-                                             color->b));
-        auto tex = SDL_CreateTextureFromSurface(renderer_, surf);
-        SDL_RenderCopy(renderer_, tex, nullptr, nullptr);
-        SDL_FreeSurface(surf);
-        SDL_DestroyTexture(tex);
-        */
       }
       start_x += kTileSize;
     }
