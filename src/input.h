@@ -12,5 +12,5 @@ enum class InputAction{
   DOWN
 };
 
-InputAction get_input_action(Screen& screen);
+InputAction get_input_action();
 }

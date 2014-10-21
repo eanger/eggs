@@ -6,7 +6,7 @@
 
 namespace eggs {
 
-InputAction get_input_action(Screen& screen){
+InputAction get_input_action(){
   SDL_Event event;
   while(SDL_PollEvent(&event)){
     switch(event.type){

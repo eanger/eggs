@@ -20,7 +20,6 @@ class Screen{
   public:
     Screen(unsigned int width, unsigned int height);
     void render(const World& world);
-    void draw_icon_at(const Icon& icon, unsigned int y, unsigned int x);
     void print_line_at(const std::string& line, unsigned int y, unsigned int x);
     void print_line_centered(const std::string& line, unsigned int y);
     void draw();

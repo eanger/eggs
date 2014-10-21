@@ -13,7 +13,7 @@
 using namespace std;
 
 namespace {
-const unsigned int kTileSize = 10;
+const int kTileSize = 10;
 }
 
 namespace eggs{
@@ -74,7 +74,7 @@ void Screen::render(const World& world){
   SDL_SetRenderDrawColor(renderer_, empty_.r, empty_.g, empty_.b, empty_.a);
   SDL_RenderClear(renderer_);
   // Do the actual rendering of world contents
-  unsigned int start_x = 0, start_y = 0;
+  int start_x = 0, start_y = 0;
   for(const auto& row : world.map_){
     for(const auto& tile : row){
       SDL_Color* color{nullptr};
@@ -123,9 +123,6 @@ void Screen::render(const World& world){
 
 void Screen::draw() {
   SDL_RenderPresent(renderer_);
-}
-
-void Screen::draw_icon_at(const Icon& icon, unsigned int y, unsigned int x){
 }
 
 void Screen::draw_frame_time(float frame_time, const World& world){

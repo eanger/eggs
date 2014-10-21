@@ -27,7 +27,7 @@ void start_engine() {
   auto frame_time = kDrawFrameTimePeriod;
   while(!gameOver){
     auto start_ticks = SDL_GetPerformanceCounter();
-    auto key = get_input_action(screen);
+    auto key = get_input_action();
     gameOver = world.update(key);
     screen.render(world);
     // Difference in ticks over ticks per second.
