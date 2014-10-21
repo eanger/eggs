@@ -1,4 +1,4 @@
-#include <SFML/Window.hpp>
+#include "SDL.h"
 
 #include "screen.h"
 
@@ -7,23 +7,22 @@
 namespace eggs {
 
 InputAction get_input_action(Screen& screen){
-  sf::Event event;
-  auto& win = screen.get_window();
-  while(win.pollEvent(event)){
+  SDL_Event event;
+  while(SDL_PollEvent(&event)){
     switch(event.type){
-    case sf::Event::Closed:
+    case SDL_QUIT:
       return InputAction::QUIT;
-    case sf::Event::KeyPressed:
-      switch(event.key.code){
-        case sf::Keyboard::Key::Q:
+    case SDL_KEYDOWN:
+      switch(event.key.keysym.sym){
+        case SDLK_q:
           return InputAction::QUIT;
-        case sf::Keyboard::Key::W:
+        case SDLK_w:
           return InputAction::UP;
-        case sf::Keyboard::Key::S:
+        case SDLK_s:
           return InputAction::DOWN;
-        case sf::Keyboard::Key::A:
+        case SDLK_a:
           return InputAction::LEFT;
-        case sf::Keyboard::Key::D:
+        case SDLK_d:
           return InputAction::RIGHT;
         default:
           break;

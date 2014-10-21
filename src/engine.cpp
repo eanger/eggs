@@ -23,20 +23,20 @@ void start_engine() {
   Screen screen{kScreenWidth, kScreenHeight};
   World world;
   bool gameOver = false;
-  sf::Clock clock;
   auto last_frame_time_draw = 0.0f;
   auto frame_time = kDrawFrameTimePeriod;
   while(!gameOver){
-    clock.restart();
-    // key == -1 means no key pressed
+    auto start_ticks = SDL_GetPerformanceCounter();
     auto key = get_input_action(screen);
     gameOver = world.update(key);
     screen.render(world);
-    auto elapsed_time = clock.getElapsedTime();
-    last_frame_time_draw += elapsed_time.asSeconds();
+    // Difference in ticks over ticks per second.
+    auto elapsed_time = (SDL_GetPerformanceCounter() - start_ticks) / 
+      SDL_GetPerformanceFrequency();
+    last_frame_time_draw += elapsed_time;
     if(last_frame_time_draw >= kDrawFrameTimePeriod){
       last_frame_time_draw = 0.0f;
-      frame_time = elapsed_time.asSeconds();
+      frame_time = elapsed_time;
     }
     screen.draw_frame_time(1000 /* ms per sec */ * frame_time, world);
     screen.draw();
