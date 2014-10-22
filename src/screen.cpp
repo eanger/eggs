@@ -38,7 +38,10 @@ Screen::Screen(unsigned int width, unsigned int height) :
   empty_{0, 0, 0, 0} /* black */,
   text_color_{255, 255, 255, 0} /* white */
 {
-  if(SDL_Init(SDL_INIT_EVERYTHING) != 0){
+  if(SDL_Init(SDL_INIT_TIMER | 
+              SDL_INIT_AUDIO |
+              SDL_INIT_VIDEO |
+              SDL_INIT_EVENTS) != 0){
     throw runtime_error("Unable to init SDL2");
   }
 
