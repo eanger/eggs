@@ -4,19 +4,19 @@
 #include "SDL.h"
 #include "SDL_ttf.h"
 
-struct SDL_Window;
-struct SDL_Renderer;
+#include "sdl_helpers.h"
 
 namespace eggs{
-struct Icon;
 class World;
 
 class Screen{
   private:
-    SDL_Window*  window_;
-    SDL_Renderer* renderer_;
+    ScopedCallHandle sdl_init_, ttf_init_;
+    ResourceHandle<SDL_Window> window_;
+    ResourceHandle<SDL_Renderer> renderer_;
+    ResourceHandle<TTF_Font> font_;
+
     SDL_Color token_, player_, wall_, empty_, text_color_;
-    TTF_Font* font_;
 
   public:
     Screen(unsigned int width, unsigned int height);

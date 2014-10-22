@@ -5,25 +5,30 @@
 #include <type_traits>
 #include <stdexcept>
 
+#include "SDL.h"
+
 namespace eggs {
 
-template<typename Creator, typename Destructor, typename... Arguments>
-auto make_resource(Creator creator,
-                   Destructor destructor,
-                   Arguments&&... args) {
-  auto resource = creator(std::forward<Arguments>(args)...);
-  if(!resource) {
-    throw std::runtime_error{"Unable to create resource"};
-  }
-  typedef typename std::decay<decltype(*resource)>::type ResourceType;
-  return std::unique_ptr<ResourceType, void(*)(ResourceType*)>(resource,
-                                                               destructor);
-}
+template<typename Resource>
+using ResourceHandle = std::unique_ptr<Resource, void(*)(Resource*)>;
 
 template<typename Creator, typename Destructor, typename... Arguments>
-auto make_scoped_call(Creator creator,
+auto make_resource(
+    Creator creator, Destructor destructor, Arguments&&... args)
+  -> ResourceHandle<typename std::decay<decltype(*creator(std::forward<Arguments>(args)...))>::type>
+{
+  auto resource = creator(std::forward<Arguments>(args)...);
+  if(!resource) {
+    throw std::runtime_error{SDL_GetError()};
+  }
+  return {resource, destructor};
+}
+
+using ScopedCallHandle = std::unique_ptr<void*, std::function<void(void*)> >;
+template<typename Creator, typename Destructor, typename... Arguments>
+ScopedCallHandle make_scoped_call(Creator creator,
                       Destructor destructor,
-                      Arguments&&... args){
+                      Arguments&&... args) {
   auto res = creator(std::forward<Arguments>(args)...);
   if(res){
     throw std::runtime_error{SDL_GetError()};

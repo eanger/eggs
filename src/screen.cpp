@@ -16,6 +16,7 @@ using namespace std;
 namespace {
 const int kTileSize = 10;
 const int kFontPtSize = 24;
+const char* kFontPath = BINDIR "/../assets/Sail-Regular.otf";
 }
 
 namespace eggs{
@@ -23,58 +24,46 @@ namespace eggs{
 void Screen::print_line_at(const std::string& line,
                            unsigned int y,
                            unsigned int x) {
-  auto surf = TTF_RenderUTF8_Shaded(font_, line.c_str(), text_color_, empty_);
+  auto surf = TTF_RenderUTF8_Shaded(font_.get(), line.c_str(), text_color_, empty_);
   SDL_Rect position{(int) x, (int) y, surf->w, surf->h};
-  auto texture = SDL_CreateTextureFromSurface(renderer_, surf);
-  SDL_RenderCopy(renderer_, texture, nullptr /* whole text texture */, &position);
+  auto texture = SDL_CreateTextureFromSurface(renderer_.get(), surf);
+  SDL_RenderCopy(renderer_.get(), texture, nullptr /* whole text texture */, &position);
   SDL_DestroyTexture(texture);
   SDL_FreeSurface(surf);
 }
 
 Screen::Screen(unsigned int width, unsigned int height) :
+  sdl_init_{make_scoped_call(SDL_Init,
+                             SDL_Quit,
+                             SDL_INIT_TIMER |
+                             SDL_INIT_AUDIO |
+                             SDL_INIT_VIDEO |
+                             SDL_INIT_EVENTS)},
+  ttf_init_{make_scoped_call(TTF_Init, TTF_Quit)},
+  window_{make_resource(SDL_CreateWindow,
+                         SDL_DestroyWindow,
+                         "EGGS",
+                         SDL_WINDOWPOS_UNDEFINED,
+                         SDL_WINDOWPOS_UNDEFINED,
+                         width,
+                         height,
+                         0)},
+  renderer_{make_resource(SDL_CreateRenderer,
+                          SDL_DestroyRenderer,
+                          window_.get(),
+                          -1 /* first available driver */,
+                          SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)},
+  font_{make_resource(TTF_OpenFont, TTF_CloseFont, kFontPath, kFontPtSize)},
   token_{255, 255, 255, 0} /* white */,
   player_{255, 0, 0, 0} /* red */,
   wall_{0, 255, 255, 0} /* cyan */,
   empty_{0, 0, 0, 0} /* black */,
   text_color_{255, 255, 255, 0} /* white */
-{
-  if(SDL_Init(SDL_INIT_TIMER | 
-              SDL_INIT_AUDIO |
-              SDL_INIT_VIDEO |
-              SDL_INIT_EVENTS) != 0){
-    throw runtime_error("Unable to init SDL2");
-  }
-
-  window_ = SDL_CreateWindow("EGGS",
-                             SDL_WINDOWPOS_UNDEFINED,
-                             SDL_WINDOWPOS_UNDEFINED,
-                             width,
-                             height,
-                             0 /* no flags */);
-  if(window_ == nullptr){
-    throw runtime_error("Unable to make a window");
-  }
-
-  renderer_ = SDL_CreateRenderer(window_,
-                                 -1 /* first available render driver */,
-                                 SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-  if(renderer_ == nullptr){
-    throw runtime_error("Unable to make a renderer");
-  }
-
-  if(TTF_Init() == -1){
-    throw runtime_error("Unable to initialize SDL_ttf");
-  }
-
-  font_ = TTF_OpenFont(BINDIR "/../assets/Sail-Regular.otf", kFontPtSize);
-  if(font_ == nullptr){
-    throw std::runtime_error("Unable to load font");
-  }
-}
+{}
 
 void Screen::render(const World& world){
-  SDL_SetRenderDrawColor(renderer_, empty_.r, empty_.g, empty_.b, empty_.a);
-  SDL_RenderClear(renderer_);
+  SDL_SetRenderDrawColor(renderer_.get(), empty_.r, empty_.g, empty_.b, empty_.a);
+  SDL_RenderClear(renderer_.get());
   // Do the actual rendering of world contents
   int start_x = 0, start_y = 0;
   for(const auto& row : world.map_){
@@ -96,8 +85,8 @@ void Screen::render(const World& world){
       }
       if(color){
         SDL_Rect rect{start_x, start_y, kTileSize, kTileSize};
-        SDL_SetRenderDrawColor(renderer_, color->r, color->g, color->b, color->a);
-        SDL_RenderFillRect(renderer_, &rect);
+        SDL_SetRenderDrawColor(renderer_.get(), color->r, color->g, color->b, color->a);
+        SDL_RenderFillRect(renderer_.get(), &rect);
       }
       start_x += kTileSize;
     }
@@ -113,7 +102,7 @@ void Screen::render(const World& world){
 }
 
 void Screen::draw() {
-  SDL_RenderPresent(renderer_);
+  SDL_RenderPresent(renderer_.get());
 }
 
 void Screen::draw_frame_time(float frame_time, const World& world){
