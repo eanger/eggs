@@ -16,6 +16,7 @@ const unsigned int kDrawFrameTimePeriodMS = 500;
 
 bool doUpdateFrameTime = true;
 unsigned int frame_time_callback(unsigned int interval, void* param){
+  (void) param; //param is unused
   doUpdateFrameTime = true;
   return interval;
 }
@@ -29,9 +30,7 @@ void start_engine() {
   bool gameOver = false;
   auto frame_time = double{0};
   auto ticks_per_sec = (double) SDL_GetPerformanceFrequency();
-  auto frame_time_timer = SDL_AddTimer(kDrawFrameTimePeriodMS,
-                                       frame_time_callback,
-                                       nullptr);
+  SDL_AddTimer(kDrawFrameTimePeriodMS, frame_time_callback, nullptr);
   while(!gameOver){
     auto start_ticks = SDL_GetPerformanceCounter();
     auto key = get_input_action();
