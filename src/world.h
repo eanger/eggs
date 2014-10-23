@@ -1,10 +1,6 @@
 #pragma once
 
-#include <array>
-
-namespace {
-const unsigned int kTotalMoves = 100;
-}
+#include <vector>
 
 namespace eggs {
 
@@ -18,8 +14,7 @@ class World {
   enum class Tile{
     TOKEN,
     PLAYER,
-    WALL,
-    EMPTY
+    WALL
   };
   enum class State{
     START,
@@ -27,11 +22,10 @@ class World {
     GAME_OVER
   };
 
-  std::array<std::array<Tile, kWorldHeight>, kWorldWidth> map_;
+  using position_t = std::pair<unsigned int, unsigned int>;
+  std::vector<position_t> entity_positions_;
+  std::vector<Tile> entity_types_;
   State state_;
-  unsigned int player_x_, player_y_;
-  unsigned int score_;
-  unsigned int moves_left_;
 
   World();
   bool update(const Input& input);

@@ -82,41 +82,26 @@ void Screen::render(const World& world){
   SDL_SetRenderDrawColor(renderer_.get(), empty_.r, empty_.g, empty_.b, empty_.a);
   SDL_RenderClear(renderer_.get());
   // Do the actual rendering of world contents
-  int start_x = 0, start_y = 0;
-  for(const auto& row : world.map_){
-    for(const auto& tile : row){
-      SDL_Texture* texture{nullptr};
-      switch(tile){
-        case World::Tile::TOKEN:
-          texture = token_.get();
-          break;
-        case World::Tile::PLAYER:
-          texture = player_.get();
-          break;
-        case World::Tile::WALL:
-          texture = wall_.get();
-          break;
-        default:
-          break;
-      }
-      SDL_Rect rect{start_x, start_y, kTileSize, kTileSize};
-      if(texture){
-        SDL_RenderCopy(renderer_.get(), texture, nullptr, &rect);
-      } else {
-        SDL_SetRenderDrawColor(renderer_.get(), empty_.r, empty_.g, empty_.b, empty_.a);
-        SDL_RenderFillRect(renderer_.get(), &rect);
-      }
-      start_x += kTileSize;
+  for (unsigned int entity_id = 0; entity_id < world.entity_positions_.size();
+       ++entity_id) {
+    const auto& entity_type = world.entity_types_[entity_id];
+    const auto& entity_pos = world.entity_positions_[entity_id];
+    SDL_Texture* texture{nullptr};
+    switch(entity_type){
+      case World::Tile::TOKEN:
+        texture = token_.get();
+        break;
+      case World::Tile::PLAYER:
+        texture = player_.get();
+        break;
+      case World::Tile::WALL:
+        texture = wall_.get();
+        break;
     }
-    start_y += kTileSize;
-    start_x = 0;
+    SDL_Rect rect{(int)entity_pos.first* kTileSize,
+                  (int)entity_pos.second* kTileSize, kTileSize, kTileSize};
+    SDL_RenderCopy(renderer_.get(), texture, nullptr, &rect);
   }
-  stringstream score_str;
-  score_str << "Score: " 
-            << world.score_ 
-            << "\nMoves Left: " 
-            << world.moves_left_;
-  print_line_at(score_str.str(), kTileSize * world.map_.size(), 0);
 }
 
 void Screen::draw() {
@@ -127,7 +112,7 @@ void Screen::draw_frame_time(float frame_time, const World& world){
   stringstream frame_time_str;
   frame_time_str.precision(2);
   frame_time_str << "Frame time: " << frame_time << "ms";
-  print_line_at(frame_time_str.str(), 0, kTileSize * world.map_.size());
+  print_line_at(frame_time_str.str(), 0, 0);
 }
 
 }
