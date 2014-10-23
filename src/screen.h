@@ -21,7 +21,7 @@ class Screen{
     SDL_Color empty_, text_color_;
 
   public:
-    Screen(unsigned int width, unsigned int height);
+    Screen();
     void render(const World& world);
     void print_line_at(const std::string& line, unsigned int y, unsigned int x);
     void draw();

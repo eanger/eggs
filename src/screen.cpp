@@ -15,6 +15,8 @@ using namespace std;
 
 namespace {
 const int kTileSize = 20;
+const unsigned int kExtraScreenWidth = 200;
+const unsigned int kExtraScreenHeight = 50;
 const int kFontPtSize = 24;
 const char* kFontPath = BINDIR "/../assets/Sail-Regular.otf";
 }
@@ -37,7 +39,7 @@ SDL_Texture* make_texture_resource(SDL_Renderer* renderer, const char* filename)
   return SDL_CreateTextureFromSurface(renderer, surf.get());
 }
 
-Screen::Screen(unsigned int width, unsigned int height) :
+Screen::Screen() :
   sdl_init_{make_scoped_call(SDL_Init,
                              SDL_Quit,
                              SDL_INIT_TIMER |
@@ -51,9 +53,9 @@ Screen::Screen(unsigned int width, unsigned int height) :
                          "EGGS",
                          SDL_WINDOWPOS_UNDEFINED,
                          SDL_WINDOWPOS_UNDEFINED,
-                         width,
-                         height,
-                         0)},
+                         kTileSize * kWorldWidth + kExtraScreenWidth,
+                         kTileSize * kWorldHeight + kExtraScreenHeight,
+                         SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE)},
   renderer_{make_resource(SDL_CreateRenderer,
                           SDL_DestroyRenderer,
                           window_.get(),
@@ -123,6 +125,7 @@ void Screen::draw() {
 
 void Screen::draw_frame_time(float frame_time, const World& world){
   stringstream frame_time_str;
+  frame_time_str.precision(2);
   frame_time_str << "Frame time: " << frame_time << "ms";
   print_line_at(frame_time_str.str(), 0, kTileSize * world.map_.size());
 }

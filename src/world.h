@@ -3,13 +3,15 @@
 #include <array>
 
 namespace {
-const unsigned int kWorldWidth = 22;
-const unsigned int kWorldHeight = 22;
-const unsigned int kPlayerStartLoc = kWorldHeight / 2;
 const unsigned int kTotalMoves = 100;
 }
 
 namespace eggs {
+
+const unsigned int kWorldWidth = 22;
+const unsigned int kWorldHeight = 22;
+const unsigned int kPlayerStartLoc = kWorldHeight / 2;
+
 class Input;
 class World {
   public:

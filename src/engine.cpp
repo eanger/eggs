@@ -10,8 +10,6 @@
 using namespace std;
 
 namespace {
-const unsigned int kScreenWidth = 640;
-const unsigned int kScreenHeight = 480;
 const unsigned int kDrawFrameTimePeriodMS = 500;
 
 bool doUpdateFrameTime = true;
@@ -25,7 +23,7 @@ unsigned int frame_time_callback(unsigned int interval, void* param){
 namespace eggs {
 
 void start_engine() {
-  Screen screen{kScreenWidth, kScreenHeight};
+  Screen screen;
   World world;
   bool gameOver = false;
   auto frame_time = double{0};
