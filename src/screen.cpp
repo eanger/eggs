@@ -26,7 +26,7 @@ namespace eggs{
 void Screen::print_line_at(const std::string& line,
                            unsigned int y,
                            unsigned int x) {
-  auto surf = TTF_RenderUTF8_Shaded(font_.get(), line.c_str(), text_color_, empty_);
+  auto surf = TTF_RenderUTF8_Solid(font_.get(), line.c_str(), text_color_);
   SDL_Rect position{(int) x, (int) y, surf->w, surf->h};
   auto texture = SDL_CreateTextureFromSurface(renderer_.get(), surf);
   SDL_RenderCopy(renderer_.get(), texture, nullptr /* whole text texture */, &position);
