@@ -7,6 +7,9 @@ namespace eggs {
 const unsigned int kWorldWidth = 22;
 const unsigned int kWorldHeight = 22;
 const unsigned int kPlayerStartLoc = kWorldHeight / 2;
+const int kTileSize = 20;
+const unsigned int kExtraScreenWidth = 200;
+const unsigned int kExtraScreenHeight = 50;
 
 class Input;
 class World {
@@ -28,6 +31,6 @@ class World {
   State state_;
 
   World();
-  bool update(const Input& input);
+  void update(const Input& input);
 };
 }

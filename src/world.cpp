@@ -10,11 +10,6 @@
 
 using namespace std;
 
-namespace {
-const bool kGameOver = true;
-const bool kKeepPlaying = false;
-}
-
 namespace eggs {
 
 World::World() : state_{State::START} {
@@ -27,39 +22,27 @@ World::World() : state_{State::START} {
          j == 0 || j == kWorldWidth - 1){
         entity_positions_.emplace_back(i, j);
         entity_types_.emplace_back(Tile::WALL);
-      } else switch(dist(eng)){
-        case 0:
-          entity_positions_.emplace_back(i, j);
-          entity_types_.emplace_back(Tile::TOKEN);
-          break;
-        case 1:
-          entity_positions_.emplace_back(i, j);
-          entity_types_.emplace_back(Tile::PLAYER);
-          break;
-        default:
-          break;
       }
     }
   }
 }
 
-bool World::update(const Input& input) {
+void World::update(const Input& input) {
   switch(state_){
     case State::START:
       state_ = State::PLAYING;
-      return kKeepPlaying;
+      break;
     case State::PLAYING:
-    {
       switch(input.action){
         case Input::Action::QUIT:
           state_ = State::GAME_OVER;
+          break;
+        case Input::Action::MOUSE_BUTTON_DOWN:
+          break;
         default:
-          return kKeepPlaying;
+          break;
       }
-      return kKeepPlaying;
-    }
-    case State::GAME_OVER:
-      return kGameOver;
+      break;
     default:
       throw runtime_error("Invalid game state");
   }

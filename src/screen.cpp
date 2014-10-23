@@ -14,9 +14,6 @@
 using namespace std;
 
 namespace {
-const int kTileSize = 20;
-const unsigned int kExtraScreenWidth = 200;
-const unsigned int kExtraScreenHeight = 50;
 const int kFontPtSize = 24;
 const char* kFontPath = BINDIR "/../assets/Sail-Regular.otf";
 }
