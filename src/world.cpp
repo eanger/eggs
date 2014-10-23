@@ -4,7 +4,6 @@
 #include <sstream>
 #include <string>
 
-#include "icon.h"
 #include "input.h"
 
 #include "world.h"
