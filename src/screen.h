@@ -3,6 +3,7 @@
 
 #include "SDL.h"
 #include "SDL_ttf.h"
+#include "SDL_image.h"
 
 #include "sdl_helpers.h"
 
@@ -11,12 +12,13 @@ class World;
 
 class Screen{
   private:
-    ScopedCallHandle sdl_init_, ttf_init_;
+    ScopedCallHandle sdl_init_, ttf_init_, img_init_;
     ResourceHandle<SDL_Window> window_;
     ResourceHandle<SDL_Renderer> renderer_;
     ResourceHandle<TTF_Font> font_;
+    ResourceHandle<SDL_Texture> token_, player_, wall_;
 
-    SDL_Color token_, player_, wall_, empty_, text_color_;
+    SDL_Color empty_, text_color_;
 
   public:
     Screen(unsigned int width, unsigned int height);

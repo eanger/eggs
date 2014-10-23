@@ -5,8 +5,8 @@
 
 #include "SDL.h"
 #include "SDL_ttf.h"
+#include "SDL_image.h"
 
-#include "icon.h"
 #include "world.h"
 
 #include "screen.h"
@@ -14,7 +14,7 @@
 using namespace std;
 
 namespace {
-const int kTileSize = 10;
+const int kTileSize = 20;
 const int kFontPtSize = 24;
 const char* kFontPath = BINDIR "/../assets/Sail-Regular.otf";
 }
@@ -32,6 +32,11 @@ void Screen::print_line_at(const std::string& line,
   SDL_FreeSurface(surf);
 }
 
+SDL_Texture* make_texture_resource(SDL_Renderer* renderer, const char* filename){
+  auto surf = make_resource(IMG_Load, SDL_FreeSurface, filename);
+  return SDL_CreateTextureFromSurface(renderer, surf.get());
+}
+
 Screen::Screen(unsigned int width, unsigned int height) :
   sdl_init_{make_scoped_call(SDL_Init,
                              SDL_Quit,
@@ -40,6 +45,7 @@ Screen::Screen(unsigned int width, unsigned int height) :
                              SDL_INIT_VIDEO |
                              SDL_INIT_EVENTS)},
   ttf_init_{make_scoped_call(TTF_Init, TTF_Quit)},
+  img_init_{make_scoped_call(IMG_Init, IMG_Quit, 0 /* no special libraries */)},
   window_{make_resource(SDL_CreateWindow,
                          SDL_DestroyWindow,
                          "EGGS",
@@ -54,11 +60,20 @@ Screen::Screen(unsigned int width, unsigned int height) :
                           -1 /* first available driver */,
                           SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)},
   font_{make_resource(TTF_OpenFont, TTF_CloseFont, kFontPath, kFontPtSize)},
-  token_{255, 255, 255, 0} /* white */,
-  player_{255, 0, 0, 0} /* red */,
-  wall_{0, 255, 255, 0} /* cyan */,
-  empty_{0, 0, 0, 0} /* black */,
-  text_color_{255, 255, 255, 0} /* white */
+  token_{make_resource(make_texture_resource,
+                       SDL_DestroyTexture,
+                       renderer_.get(),
+                       BINDIR "/../assets/chair.bmp")},
+  player_{make_resource(make_texture_resource,
+                       SDL_DestroyTexture,
+                       renderer_.get(),
+                       BINDIR "/../assets/guy.bmp")},
+  wall_{make_resource(make_texture_resource,
+                       SDL_DestroyTexture,
+                       renderer_.get(),
+                       BINDIR "/../assets/door.bmp")},
+  empty_{255, 255, 255, 0} /* white */,
+  text_color_{0, 0, 0, 0} /* black */
 {}
 
 void Screen::render(const World& world){
@@ -68,24 +83,25 @@ void Screen::render(const World& world){
   int start_x = 0, start_y = 0;
   for(const auto& row : world.map_){
     for(const auto& tile : row){
-      SDL_Color* color{nullptr};
+      SDL_Texture* texture{nullptr};
       switch(tile){
         case World::Tile::TOKEN:
-          color = &token_;
+          texture = token_.get();
           break;
         case World::Tile::PLAYER:
-          color = &player_;
+          texture = player_.get();
           break;
         case World::Tile::WALL:
-          color = &wall_;
+          texture = wall_.get();
           break;
-        case World::Tile::EMPTY:
-          color = &empty_;
+        default:
           break;
       }
-      if(color){
-        SDL_Rect rect{start_x, start_y, kTileSize, kTileSize};
-        SDL_SetRenderDrawColor(renderer_.get(), color->r, color->g, color->b, color->a);
+      SDL_Rect rect{start_x, start_y, kTileSize, kTileSize};
+      if(texture){
+        SDL_RenderCopy(renderer_.get(), texture, nullptr, &rect);
+      } else {
+        SDL_SetRenderDrawColor(renderer_.get(), empty_.r, empty_.g, empty_.b, empty_.a);
         SDL_RenderFillRect(renderer_.get(), &rect);
       }
       start_x += kTileSize;
