@@ -42,7 +42,7 @@ World::World() :
   map_[kPlayerStartLoc][kPlayerStartLoc] = Tile::PLAYER;
 }
 
-bool World::update(InputAction action) {
+bool World::update(const Input& input) {
   switch(state_){
     case State::START:
       state_ = State::PLAYING;
@@ -51,32 +51,32 @@ bool World::update(InputAction action) {
     {
       int xdiff = 0;
       int ydiff = 0;
-      switch(action){
-        case InputAction::UP:
+      switch(input.action){
+        case Input::Action::UP:
           if(player_y_ == 1){ // at top wall
             return kKeepPlaying;
           }
           ydiff = -1;
           break;
-        case InputAction::DOWN:
+        case Input::Action::DOWN:
           if(player_y_ == kWorldHeight - 2){ // at bottom wall
             return kKeepPlaying;
           }
           ydiff = 1;
           break;
-        case InputAction::LEFT:
+        case Input::Action::LEFT:
           if(player_x_ == 1){ // at left wall
             return kKeepPlaying;
           }
           xdiff = -1;
           break;
-        case InputAction::RIGHT:
+        case Input::Action::RIGHT:
           if(player_x_ == kWorldWidth - 2){ // at right wall
             return kKeepPlaying;
           }
           xdiff = 1;
           break;
-        case InputAction::QUIT:
+        case Input::Action::QUIT:
           state_ = State::GAME_OVER;
         default:
           return kKeepPlaying;

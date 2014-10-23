@@ -33,8 +33,8 @@ void start_engine() {
   SDL_AddTimer(kDrawFrameTimePeriodMS, frame_time_callback, nullptr);
   while(!gameOver){
     auto start_ticks = SDL_GetPerformanceCounter();
-    auto key = get_input_action();
-    gameOver = world.update(key);
+    auto input = get_input();
+    gameOver = world.update(input);
     screen.render(world);
     // Difference in ticks over ticks per second.
     auto end_ticks = SDL_GetPerformanceCounter();

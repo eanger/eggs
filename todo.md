@@ -1,4 +1,3 @@
-* Refactor SDL code for c++(11)
 * Find some 2d art for office-y stuff (person, desk, chair, wall, floor
 * Mouse actions: clicking, hovering, dragging, releasing
 * Make whole frame tiled, but not rendered as tiles

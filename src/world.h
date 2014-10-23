@@ -10,7 +10,7 @@ const unsigned int kTotalMoves = 100;
 }
 
 namespace eggs {
-enum class InputAction;
+class Input;
 class World {
   public:
   enum class Tile{
@@ -32,6 +32,6 @@ class World {
   unsigned int moves_left_;
 
   World();
-  bool update(InputAction action);
+  bool update(const Input& input);
 };
 }
