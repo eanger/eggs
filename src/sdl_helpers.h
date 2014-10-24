@@ -7,6 +7,8 @@
 
 #include "SDL.h"
 
+#include "../utils/easylogging++.h"
+
 namespace eggs {
 
 template<typename Resource>
@@ -19,7 +21,7 @@ auto make_resource(
 {
   auto resource = creator(std::forward<Arguments>(args)...);
   if(!resource) {
-    throw std::runtime_error{SDL_GetError()};
+    LOG(ERROR) << "Unable to create resource: " << SDL_GetError();
   }
   return {resource, destructor};
 }
@@ -31,7 +33,7 @@ ScopedCallHandle make_scoped_call(Creator creator,
                       Arguments&&... args) {
   auto res = creator(std::forward<Arguments>(args)...);
   if(res){
-    throw std::runtime_error{SDL_GetError()};
+    LOG(ERROR) << "Failed initial scope call: " << SDL_GetError();
   }
   auto deleter = [=](void*){ destructor(); };
   return std::unique_ptr<void*,decltype(deleter)>(nullptr, deleter);
