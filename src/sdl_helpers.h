@@ -7,7 +7,7 @@
 
 #include "SDL.h"
 
-#include "../utils/easylogging++.h"
+#include "utils/easylogging++.h"
 
 namespace eggs {
 

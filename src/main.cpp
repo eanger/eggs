@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../utils/easylogging++.h"
+#include "utils/easylogging++.h"
 #include "engine.h"
 
 using namespace std;

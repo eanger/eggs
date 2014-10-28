@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../utils/easylogging++.h"
+#include "utils/easylogging++.h"
 #include "screen.h"
 #include "input.h"
 #include "world.h"
