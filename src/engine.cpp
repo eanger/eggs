@@ -23,14 +23,15 @@ unsigned int frame_time_callback(unsigned int interval, void* param){
 namespace eggs {
 
 void start_engine() {
-  Screen screen;
+  Input input;
   World world;
+  Screen screen;
   auto frame_time = double{0};
   auto ticks_per_sec = (double) SDL_GetPerformanceFrequency();
   SDL_AddTimer(kDrawFrameTimePeriodMS, frame_time_callback, nullptr);
   while(world.state_ != World::State::GAME_OVER){
     auto start_ticks = SDL_GetPerformanceCounter();
-    auto input = get_input();
+    input.update();
     world.update(input);
     screen.render(world);
     // Difference in ticks over ticks per second.

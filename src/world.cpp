@@ -12,7 +12,7 @@ using namespace std;
 
 namespace eggs {
 
-World::World() : state_{State::START} {
+World::World() : state_{State::START}, is_debug_{true} {
   random_device rd;
   default_random_engine eng(rd());
   uniform_int_distribution<int> dist(0,2);
@@ -39,6 +39,8 @@ void World::update(const Input& input) {
           break;
         case Input::Action::MOUSE_BUTTON_DOWN:
           break;
+        case Input::Action::DEBUG:
+          is_debug_ = !is_debug_; // toggle debug state
         default:
           break;
       }

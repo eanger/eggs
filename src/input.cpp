@@ -6,51 +6,53 @@
 
 namespace eggs {
 
-Input get_input(){
-  Input input;
+void Input::update(){
+  action = Input::Action::NONE;
   SDL_Event event;
   while(SDL_PollEvent(&event)){
     switch(event.type){
     case SDL_QUIT:
-      input.action = Input::Action::QUIT;
+      action = Input::Action::QUIT;
       break;
     case SDL_KEYDOWN:
       switch(event.key.keysym.sym){
         case SDLK_q:
-          input.action = Input::Action::QUIT;
+          action = Input::Action::QUIT;
           break;
         case SDLK_w:
-          input.action = Input::Action::UP;
+          action = Input::Action::UP;
           break;
         case SDLK_s:
-          input.action = Input::Action::DOWN;
+          action = Input::Action::DOWN;
           break;
         case SDLK_a:
-          input.action = Input::Action::LEFT;
+          action = Input::Action::LEFT;
           break;
         case SDLK_d:
-          input.action = Input::Action::RIGHT;
+          action = Input::Action::RIGHT;
+          break;
+        case SDLK_BACKQUOTE:
+          action = Input::Action::DEBUG;
           break;
         default:
           break;
       }
       break;
     case SDL_MOUSEMOTION:
-      input.action = Input::Action::MOUSE_MOVE;
-      input.mouse_x = event.motion.x;
-      input.mouse_y = event.motion.y;
+      action = Input::Action::MOUSE_MOVE;
+      mouse_x = event.motion.x;
+      mouse_y = event.motion.y;
       break;
     case SDL_MOUSEBUTTONDOWN:
-      input.action = Input::Action::MOUSE_BUTTON_DOWN;
+      action = Input::Action::MOUSE_BUTTON_DOWN;
       break;
     case SDL_MOUSEBUTTONUP:
-      input.action = Input::Action::MOUSE_BUTTON_UP;
+      action = Input::Action::MOUSE_BUTTON_UP;
       break;
     default:
       break;
     }
   }
-  return input;
 }
 
 }

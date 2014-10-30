@@ -29,6 +29,7 @@ class World {
   std::vector<position_t> entity_positions_;
   std::vector<Tile> entity_types_;
   State state_;
+  bool is_debug_;
 
   World();
   void update(const Input& input);
