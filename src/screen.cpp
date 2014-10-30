@@ -82,7 +82,7 @@ Screen::Screen() :
 	text_color_.a = 0;
 }
 
-void Screen::render(const World& world){
+void Screen::update(const World& world){
   SDL_SetRenderDrawColor(renderer_.get(), empty_.r, empty_.g, empty_.b, empty_.a);
   SDL_RenderClear(renderer_.get());
   // Do the actual rendering of world contents
@@ -106,9 +106,6 @@ void Screen::render(const World& world){
                   (int)entity_pos.second* kTileSize, kTileSize, kTileSize};
     SDL_RenderCopy(renderer_.get(), texture, nullptr, &rect);
   }
-}
-
-void Screen::draw() {
   SDL_RenderPresent(renderer_.get());
 }
 
