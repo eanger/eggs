@@ -1,12 +1,13 @@
+file(GLOB_RECURSE INCS "*.h")
 add_executable(eggs
 engine.cpp
 input.cpp
 main.cpp
 screen.cpp
 state.cpp
-world.cpp)
+world.cpp
+${INCS})
 
-#set(CMAKE_PREFIX_PATH "C:/Users/Eric/Downloads/SFML-2.1-windows-gcc-4.7-mingw-32bits/SFML-2.1")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 find_package(SDL2 REQUIRED)
 find_package(SDL2TTF REQUIRED)
@@ -16,6 +17,3 @@ include_directories(${SDL2_INCLUDE_DIR} ${SDL2TTF_INCLUDE_DIR} ${SDL2IMAGE_INCLU
 target_link_libraries(eggs ${SDL2_LIBRARY} ${SDL2TTFMAIN_LIBRARY} ${SDL2IMAGE_LIBRARY})
 
 add_definitions(-DBINDIR="${CMAKE_CURRENT_BINARY_DIR}")
-
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g -O0 -D_DEBUG")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2 -DNDEBUG")

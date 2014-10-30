@@ -70,10 +70,17 @@ Screen::Screen() :
   wall_{make_resource(make_texture_resource,
                        SDL_DestroyTexture,
                        renderer_.get(),
-                       BINDIR "/../assets/door.bmp")},
-  empty_{255, 255, 255, 0} /* white */,
-  text_color_{0, 0, 0, 0} /* black */
-{}
+                       BINDIR "/../assets/door.bmp")}
+{
+	empty_.r = 255;
+	empty_.g = 255;
+	empty_.b = 255;
+	empty_.a = 0;
+	text_color_.r = 0;
+	text_color_.g = 0;
+	text_color_.b = 0;
+	text_color_.a = 0;
+}
 
 void Screen::render(const World& world){
   SDL_SetRenderDrawColor(renderer_.get(), empty_.r, empty_.g, empty_.b, empty_.a);
