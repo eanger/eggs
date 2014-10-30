@@ -5,6 +5,7 @@
 #include <string>
 
 #include "input.h"
+#include "timer.h"
 
 #include "world.h"
 
@@ -28,6 +29,8 @@ World::World() : state_{State::START}, is_debug_{true} {
 }
 
 void World::update(const Input& input) {
+  timer_.reset();
+  timer_.start();
   switch(state_){
     case State::START:
       state_ = State::PLAYING;
@@ -48,6 +51,7 @@ void World::update(const Input& input) {
     default:
       throw runtime_error("Invalid game state");
   }
+  timer_.stop();
 }
 
 }

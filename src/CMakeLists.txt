@@ -6,6 +6,7 @@ main.cpp
 screen.cpp
 state.cpp
 world.cpp
+timer.cpp
 ${INCS})
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})

@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include "timer.h"
+
 namespace eggs {
 
 const unsigned int kWorldWidth = 22;
@@ -30,6 +32,7 @@ class World {
   std::vector<Tile> entity_types_;
   State state_;
   bool is_debug_;
+  Timer timer_;
 
   World();
   void update(const Input& input);

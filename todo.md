@@ -1,6 +1,4 @@
 # Quick things
-* Switch screen to update method
-* timer class that abstracts sdl timer obj with start/stop/read/reset fns
 
 # Bigger Tasks
 * Make whole frame tiled, but not rendered as tiles

@@ -8,6 +8,7 @@
 #include "SDL_image.h"
 
 #include "world.h"
+#include "timer.h"
 
 #include "screen.h"
 
@@ -105,6 +106,10 @@ void Screen::update(const World& world){
     SDL_Rect rect{(int)entity_pos.first* kTileSize,
                   (int)entity_pos.second* kTileSize, kTileSize, kTileSize};
     SDL_RenderCopy(renderer_.get(), texture, nullptr, &rect);
+  }
+  if(world.is_debug_){
+    auto world_time = world.timer_.read_ms();
+    draw_frame_time(world_time, world);
   }
   SDL_RenderPresent(renderer_.get());
 }
