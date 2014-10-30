@@ -14,8 +14,8 @@
 using namespace std;
 
 namespace {
-const int kFontPtSize = 24;
-const char* kFontPath = BINDIR "/../assets/Sail-Regular.otf";
+const int kFontPtSize = 16;
+const char* kFontPath = BINDIR "/../assets/DroidSansMono.ttf";
 }
 
 namespace eggs{
