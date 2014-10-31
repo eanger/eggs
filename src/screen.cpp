@@ -9,6 +9,7 @@
 
 #include "world.h"
 #include "timer.h"
+#include "input.h"
 
 #include "screen.h"
 
@@ -83,7 +84,7 @@ Screen::Screen() :
 	text_color_.a = 0;
 }
 
-void Screen::update(const World& world){
+void Screen::update(const Input& input, const World& world){
   SDL_SetRenderDrawColor(renderer_.get(), empty_.r, empty_.g, empty_.b, empty_.a);
   SDL_RenderClear(renderer_.get());
   // Do the actual rendering of world contents
@@ -110,6 +111,9 @@ void Screen::update(const World& world){
   if(world.is_debug_){
     auto world_time = world.timer_.read_ms();
     draw_frame_time(world_time, world);
+    stringstream mousestr;
+    mousestr << "Mouse: (" << input.mouse_loc.x << "," << input.mouse_loc.y << ")";
+    print_line_at(mousestr.str(), kWorldHeight * kTileSize, 0);
   }
   SDL_RenderPresent(renderer_.get());
 }

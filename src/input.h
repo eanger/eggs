@@ -1,5 +1,7 @@
 #pragma once
 
+#include "utils/glm/glm.hpp"
+
 namespace eggs {
 
 class Input {
@@ -7,7 +9,7 @@ class Input {
     Input() : action{Action::NONE} {}
     void update();
 
-    unsigned int mouse_x, mouse_y;
+    glm::vec2 mouse_loc;
     enum class Action{
       NONE,
       QUIT,

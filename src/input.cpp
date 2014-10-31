@@ -1,5 +1,6 @@
 #include "SDL.h"
 
+#include "utils/glm/glm.hpp"
 #include "screen.h"
 
 #include "input.h"
@@ -40,8 +41,7 @@ void Input::update(){
       break;
     case SDL_MOUSEMOTION:
       action = Input::Action::MOUSE_MOVE;
-      mouse_x = event.motion.x;
-      mouse_y = event.motion.y;
+      mouse_loc = glm::vec2(event.motion.x, event.motion.y);
       break;
     case SDL_MOUSEBUTTONDOWN:
       action = Input::Action::MOUSE_BUTTON_DOWN;

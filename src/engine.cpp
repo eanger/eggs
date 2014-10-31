@@ -29,7 +29,7 @@ void start_engine() {
   while(world.state_ != World::State::GAME_OVER){
     input.update();
     world.update(input);
-    screen.update(world);
+    screen.update(input, world);
   }
 }
 
