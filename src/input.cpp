@@ -1,6 +1,7 @@
 #include "SDL.h"
 
 #include "utils/glm/glm.hpp"
+#include "utils/easylogging++.h"
 #include "screen.h"
 
 #include "input.h"

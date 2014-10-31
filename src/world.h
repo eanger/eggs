@@ -54,6 +54,7 @@ class World {
   Timer timer_;
   Camera camera_;
   glm::vec2 mouse_pos;
+  int new_obj_index_;
 
   World();
   void update(const Input& input);
