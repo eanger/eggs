@@ -17,6 +17,7 @@ using namespace std;
 
 namespace {
 const int kFontPtSize = 16;
+const int kFontHeight = 20;
 const char* kFontPath = BINDIR "/../assets/DroidSansMono.ttf";
 }
 
@@ -25,7 +26,7 @@ namespace eggs{
 void Screen::print_line_at(const std::string& line,
                            unsigned int y,
                            unsigned int x) {
-  auto surf = TTF_RenderUTF8_Solid(font_.get(), line.c_str(), text_color_);
+  auto surf = TTF_RenderUTF8_Shaded(font_.get(), line.c_str(), text_color_, empty_);
   SDL_Rect position{(int) x, (int) y, surf->w, surf->h};
   auto texture = SDL_CreateTextureFromSurface(renderer_.get(), surf);
   SDL_RenderCopy(renderer_.get(), texture, nullptr /* whole text texture */, &position);
@@ -52,8 +53,8 @@ Screen::Screen() :
                          "EGGS",
                          SDL_WINDOWPOS_UNDEFINED,
                          SDL_WINDOWPOS_UNDEFINED,
-                         kTileSize * kWorldWidth + kExtraScreenWidth,
-                         kTileSize * kWorldHeight + kExtraScreenHeight,
+                         kStartWidth,
+                         kStartHeight,
                          SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE)},
   renderer_{make_resource(SDL_CreateRenderer,
                           SDL_DestroyRenderer,
@@ -91,7 +92,9 @@ void Screen::update(const Input& input, const World& world){
   for (unsigned int entity_id = 0; entity_id < world.entity_positions_.size();
        ++entity_id) {
     const auto& entity_type = world.entity_types_[entity_id];
-    const auto& entity_pos = world.entity_positions_[entity_id];
+    // Get entity position in camera coordinates
+    auto entity_pos =
+        world_to_camera(world.entity_positions_[entity_id], world.camera_);
     SDL_Texture* texture{nullptr};
     switch(entity_type){
       case World::Tile::TOKEN:
@@ -104,16 +107,15 @@ void Screen::update(const Input& input, const World& world){
         texture = wall_.get();
         break;
     }
-    SDL_Rect rect{(int)entity_pos.first* kTileSize,
-                  (int)entity_pos.second* kTileSize, kTileSize, kTileSize};
+    SDL_Rect rect{(int)entity_pos.x, (int)entity_pos.y, kTileSize, kTileSize};
     SDL_RenderCopy(renderer_.get(), texture, nullptr, &rect);
   }
   if(world.is_debug_){
     auto world_time = world.timer_.read_ms();
     draw_frame_time(world_time, world);
     stringstream mousestr;
-    mousestr << "Mouse: (" << input.mouse_loc.x << "," << input.mouse_loc.y << ")";
-    print_line_at(mousestr.str(), kWorldHeight * kTileSize, 0);
+    mousestr << "Mouse: (" << world.mouse_pos.x << "," << world.mouse_pos.y << ")";
+    print_line_at(mousestr.str(), kStartHeight - kFontHeight, 0);
   }
   SDL_RenderPresent(renderer_.get());
 }
