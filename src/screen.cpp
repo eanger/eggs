@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <sstream>
 #include <iostream>
+#include <string>
 
 #include "SDL.h"
 #include "SDL_ttf.h"
@@ -16,7 +17,6 @@ using namespace std;
 
 namespace {
 const int kFontPtSize = 16;
-const char* kFontPath = BINDIR "/../assets/DroidSansMono.ttf";
 }
 
 namespace eggs{
@@ -38,6 +38,7 @@ SDL_Texture* make_texture_resource(SDL_Renderer* renderer, const char* filename)
 }
 
 Screen::Screen() :
+  assets_path_{SDL_GetBasePath()},
   sdl_init_{make_scoped_call(SDL_Init,
                              SDL_Quit,
                              SDL_INIT_TIMER |
@@ -59,19 +60,21 @@ Screen::Screen() :
                           window_.get(),
                           -1 /* first available driver */,
                           SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)},
-  font_{make_resource(TTF_OpenFont, TTF_CloseFont, kFontPath, kFontPtSize)},
+  font_{make_resource(TTF_OpenFont, TTF_CloseFont,
+                      (assets_path_ + "../assets/DroidSansMono.ttf").c_str(),
+                      kFontPtSize)},
   token_{make_resource(make_texture_resource,
                        SDL_DestroyTexture,
                        renderer_.get(),
-                       BINDIR "/../assets/chair.bmp")},
+                       (assets_path_ +  "/../assets/chair.bmp").c_str())},
   player_{make_resource(make_texture_resource,
                        SDL_DestroyTexture,
                        renderer_.get(),
-                       BINDIR "/../assets/guy.bmp")},
+                       (assets_path_ +  "/../assets/guy.bmp").c_str())},
   wall_{make_resource(make_texture_resource,
                        SDL_DestroyTexture,
                        renderer_.get(),
-                       BINDIR "/../assets/door.bmp")}
+                       (assets_path_ +  "/../assets/door.bmp").c_str())}
 {
 	empty_.r = 255;
 	empty_.g = 255;

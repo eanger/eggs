@@ -12,6 +12,7 @@ class World;
 
 class Screen{
   private:
+    std::string assets_path_;
     ScopedCallHandle sdl_init_, ttf_init_, img_init_;
     ResourceHandle<SDL_Window> window_;
     ResourceHandle<SDL_Renderer> renderer_;
