@@ -9,6 +9,7 @@
 
 namespace eggs{
 class World;
+class Input;
 
 class Screen{
   private:
@@ -23,7 +24,7 @@ class Screen{
 
   public:
     Screen();
-    void update(const World& world);
+    void update(const Input& input, const World& world);
     void print_line_at(const std::string& line, unsigned int y, unsigned int x);
     void draw_frame_time(float frame_time, const World& world);
 };
