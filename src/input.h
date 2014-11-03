@@ -1,12 +1,13 @@
 #pragma once
 
+#include <queue>
+
 #include "utils/glm/glm.hpp"
 
 namespace eggs {
 
 class Input {
   public:
-    Input() : action{Action::NONE} {}
     void update();
 
     glm::vec2 mouse_loc;
@@ -21,7 +22,8 @@ class Input {
       MOUSE_BUTTON_UP,
       MOUSE_BUTTON_DOWN,
       DEBUG
-    } action;
+    };
+    std::queue<Action> actions_;
 };
 
 }

@@ -57,6 +57,6 @@ class World {
   int new_obj_index_;
 
   World();
-  void update(const Input& input);
+  void update(Input& input);
 };
 }

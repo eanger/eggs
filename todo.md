@@ -1,5 +1,4 @@
 # Quick things
-* Vector of Input actions to process, not just one
 
 # Bigger Tasks
 * Buildables (size/sprite/etc) (person, desk chair, wall, floor)
