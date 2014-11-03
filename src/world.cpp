@@ -65,6 +65,7 @@ void World::update(const Input& input) {
           break;
         case Input::Action::DEBUG:
           is_debug_ = !is_debug_; // toggle debug state
+          break;
         case Input::Action::UP:
           camera_.move_up();
           mouse_pos = camera_to_world(input.mouse_loc, camera_);
