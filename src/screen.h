@@ -18,7 +18,7 @@ class Screen{
     ResourceHandle<SDL_Window> window_;
     ResourceHandle<SDL_Renderer> renderer_;
     ResourceHandle<TTF_Font> font_;
-    ResourceHandle<SDL_Texture> token_, player_, wall_;
+    ResourceHandle<SDL_Texture> chair_, desk_, door_, worker_, wall_;
 
     SDL_Color empty_, text_color_;
 

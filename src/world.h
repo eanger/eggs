@@ -37,8 +37,10 @@ glm::vec2 camera_to_world(glm::vec2 camera_pos, const Camera& camera);
 class World {
   public:
   enum class Tile{
-    TOKEN,
-    PLAYER,
+    CHAIR,
+    DESK,
+    DOOR,
+    WORKER,
     WALL
   };
 
@@ -50,6 +52,7 @@ class World {
   glm::vec2 mouse_pos;
   int new_obj_index_;
   bool is_game_over_;
+  Tile brush_;
 
   World();
   void update(Input& input);

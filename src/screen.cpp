@@ -65,18 +65,26 @@ Screen::Screen() :
   font_{make_resource(TTF_OpenFont, TTF_CloseFont,
                       (assets_path_ + "../assets/DroidSansMono.ttf").c_str(),
                       kFontPtSize)},
-  token_{make_resource(make_texture_resource,
+  chair_{make_resource(make_texture_resource,
                        SDL_DestroyTexture,
                        renderer_.get(),
                        (assets_path_ +  "/../assets/chair.bmp").c_str())},
-  player_{make_resource(make_texture_resource,
+  desk_{make_resource(make_texture_resource,
+                       SDL_DestroyTexture,
+                       renderer_.get(),
+                       (assets_path_ +  "/../assets/desk.bmp").c_str())},
+  door_{make_resource(make_texture_resource,
+                       SDL_DestroyTexture,
+                       renderer_.get(),
+                       (assets_path_ +  "/../assets/door.bmp").c_str())},
+  worker_{make_resource(make_texture_resource,
                        SDL_DestroyTexture,
                        renderer_.get(),
                        (assets_path_ +  "/../assets/guy.bmp").c_str())},
   wall_{make_resource(make_texture_resource,
                        SDL_DestroyTexture,
                        renderer_.get(),
-                       (assets_path_ +  "/../assets/door.bmp").c_str())}
+                       (assets_path_ +  "/../assets/walls.bmp").c_str())}
 {
 	empty_.r = 255;
 	empty_.g = 255;
@@ -100,11 +108,17 @@ void Screen::update(const Input& input, const World& world){
         world_to_camera(world.entity_positions_[entity_id], world.camera_);
     SDL_Texture* texture{nullptr};
     switch(entity_type){
-      case World::Tile::TOKEN:
-        texture = token_.get();
+      case World::Tile::CHAIR:
+        texture = chair_.get();
         break;
-      case World::Tile::PLAYER:
-        texture = player_.get();
+      case World::Tile::DESK:
+        texture = desk_.get();
+        break;
+      case World::Tile::DOOR:
+        texture = door_.get();
+        break;
+      case World::Tile::WORKER:
+        texture = worker_.get();
         break;
       case World::Tile::WALL:
         texture = wall_.get();

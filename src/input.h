@@ -21,7 +21,12 @@ class Input {
       MOUSE_MOVE,
       MOUSE_BUTTON_UP,
       MOUSE_BUTTON_DOWN,
-      DEBUG
+      DEBUG,
+      DESK,
+      CHAIR,
+      DOOR,
+      WORKER,
+      WALL
     };
     std::queue<Action> actions_;
 };

@@ -32,6 +32,21 @@ void Input::update(){
         case SDLK_d:
           actions_.push(Input::Action::RIGHT);
           break;
+        case SDLK_z:
+          actions_.push(Input::Action::DESK);
+          break;
+        case SDLK_x:
+          actions_.push(Input::Action::CHAIR);
+          break;
+        case SDLK_c:
+          actions_.push(Input::Action::DOOR);
+          break;
+        case SDLK_v:
+          actions_.push(Input::Action::WORKER);
+          break;
+        case SDLK_b:
+          actions_.push(Input::Action::WALL);
+          break;
         case SDLK_BACKQUOTE:
           actions_.push(Input::Action::DEBUG);
           break;

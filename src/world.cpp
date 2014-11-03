@@ -18,7 +18,8 @@ namespace eggs {
 World::World()
     : is_debug_{true},
       new_obj_index_{-1},
-      is_game_over_{false}
+      is_game_over_{false},
+      brush_{Tile::CHAIR}
   {
   random_device rd;
   default_random_engine eng(rd());
@@ -53,7 +54,7 @@ void World::update(Input& input) {
       case Input::Action::MOUSE_BUTTON_DOWN:
         {
         new_obj_index_ = entity_types_.size();
-        entity_types_.emplace_back(Tile::TOKEN);
+        entity_types_.emplace_back(brush_);
         auto ent_pos = camera_to_world(input.mouse_loc, camera_);
         entity_positions_.emplace_back(floor(ent_pos.x), floor(ent_pos.y));
         break;
@@ -79,6 +80,21 @@ void World::update(Input& input) {
       case Input::Action::RIGHT:
         camera_.move_right();
         mouse_pos = camera_to_world(input.mouse_loc, camera_);
+        break;
+      case Input::Action::CHAIR:
+        brush_ = Tile::CHAIR;
+        break;
+      case Input::Action::DESK:
+        brush_ = Tile::DESK;
+        break;
+      case Input::Action::DOOR:
+        brush_ = Tile::DOOR;
+        break;
+      case Input::Action::WORKER:
+        brush_ = Tile::WORKER;
+        break;
+      case Input::Action::WALL:
+        brush_ = Tile::WALL;
         break;
       default:
         break;
