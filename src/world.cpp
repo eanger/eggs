@@ -16,9 +16,9 @@ using namespace std;
 namespace eggs {
 
 World::World()
-    : state_{State::START},
-      is_debug_{true},
-      new_obj_index_{-1}
+    : is_debug_{true},
+      new_obj_index_{-1},
+      is_game_over_{false}
   {
   random_device rd;
   default_random_engine eng(rd());
@@ -37,61 +37,52 @@ World::World()
 void World::update(Input& input) {
   timer_.reset();
   timer_.start();
-  switch(state_){
-    case State::START:
-      state_ = State::PLAYING;
-      break;
-    case State::PLAYING:
-      while(!input.actions_.empty()){
-        const auto action = input.actions_.front();
-        input.actions_.pop();
-        switch(action){
-          case Input::Action::QUIT:
-            state_ = State::GAME_OVER;
-            break;
-          case Input::Action::MOUSE_MOVE:
-            mouse_pos = camera_to_world(input.mouse_loc, camera_);
-            if(new_obj_index_ != -1){
-              entity_positions_[new_obj_index_] = glm::floor(mouse_pos);
-            }
-            break;
-          case Input::Action::MOUSE_BUTTON_DOWN:
-            {
-            new_obj_index_ = entity_types_.size();
-            entity_types_.emplace_back(Tile::TOKEN);
-            auto ent_pos = camera_to_world(input.mouse_loc, camera_);
-            entity_positions_.emplace_back(floor(ent_pos.x), floor(ent_pos.y));
-            break;
-            }
-          case Input::Action::MOUSE_BUTTON_UP:
-            new_obj_index_ = -1; /* sentinel for no entity */
-            break;
-          case Input::Action::DEBUG:
-            is_debug_ = !is_debug_; // toggle debug state
-            break;
-          case Input::Action::UP:
-            camera_.move_up();
-            mouse_pos = camera_to_world(input.mouse_loc, camera_);
-            break;
-          case Input::Action::DOWN:
-            camera_.move_down();
-            mouse_pos = camera_to_world(input.mouse_loc, camera_);
-            break;
-          case Input::Action::LEFT:
-            camera_.move_left();
-            mouse_pos = camera_to_world(input.mouse_loc, camera_);
-            break;
-          case Input::Action::RIGHT:
-            camera_.move_right();
-            mouse_pos = camera_to_world(input.mouse_loc, camera_);
-            break;
-          default:
-            break;
+  while(!input.actions_.empty()){
+    const auto action = input.actions_.front();
+    input.actions_.pop();
+    switch(action){
+      case Input::Action::QUIT:
+        is_game_over_ = true;
+        break;
+      case Input::Action::MOUSE_MOVE:
+        mouse_pos = camera_to_world(input.mouse_loc, camera_);
+        if(new_obj_index_ != -1){
+          entity_positions_[new_obj_index_] = glm::floor(mouse_pos);
         }
-      }
-      break;
-    default:
-      throw runtime_error("Invalid game state");
+        break;
+      case Input::Action::MOUSE_BUTTON_DOWN:
+        {
+        new_obj_index_ = entity_types_.size();
+        entity_types_.emplace_back(Tile::TOKEN);
+        auto ent_pos = camera_to_world(input.mouse_loc, camera_);
+        entity_positions_.emplace_back(floor(ent_pos.x), floor(ent_pos.y));
+        break;
+        }
+      case Input::Action::MOUSE_BUTTON_UP:
+        new_obj_index_ = -1; /* sentinel for no entity */
+        break;
+      case Input::Action::DEBUG:
+        is_debug_ = !is_debug_; // toggle debug state
+        break;
+      case Input::Action::UP:
+        camera_.move_up();
+        mouse_pos = camera_to_world(input.mouse_loc, camera_);
+        break;
+      case Input::Action::DOWN:
+        camera_.move_down();
+        mouse_pos = camera_to_world(input.mouse_loc, camera_);
+        break;
+      case Input::Action::LEFT:
+        camera_.move_left();
+        mouse_pos = camera_to_world(input.mouse_loc, camera_);
+        break;
+      case Input::Action::RIGHT:
+        camera_.move_right();
+        mouse_pos = camera_to_world(input.mouse_loc, camera_);
+        break;
+      default:
+        break;
+    }
   }
   timer_.stop();
 }

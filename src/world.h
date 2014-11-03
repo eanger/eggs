@@ -41,20 +41,15 @@ class World {
     PLAYER,
     WALL
   };
-  enum class State{
-    START,
-    PLAYING,
-    GAME_OVER
-  };
 
   std::vector<glm::vec2> entity_positions_;
   std::vector<Tile> entity_types_;
-  State state_;
   bool is_debug_;
   Timer timer_;
   Camera camera_;
   glm::vec2 mouse_pos;
   int new_obj_index_;
+  bool is_game_over_;
 
   World();
   void update(Input& input);

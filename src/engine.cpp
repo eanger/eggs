@@ -9,24 +9,13 @@
 
 using namespace std;
 
-namespace {
-const unsigned int kDrawFrameTimePeriodMS = 500;
-
-bool doUpdateFrameTime = true;
-unsigned int frame_time_callback(unsigned int interval, void* param){
-  (void) param; //param is unused
-  doUpdateFrameTime = true;
-  return interval;
-}
-}
-
 namespace eggs {
 
 void start_engine() {
   Input input;
   World world;
   Screen screen;
-  while(world.state_ != World::State::GAME_OVER){
+  while(!world.is_game_over_){
     input.update();
     world.update(input);
     screen.update(input, world);
