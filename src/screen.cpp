@@ -11,6 +11,7 @@
 #include "world.h"
 #include "timer.h"
 #include "input.h"
+#include "entity.h"
 
 #include "screen.h"
 
@@ -100,27 +101,29 @@ void Screen::update(const Input& input, const World& world){
   SDL_SetRenderDrawColor(renderer_.get(), empty_.r, empty_.g, empty_.b, empty_.a);
   SDL_RenderClear(renderer_.get());
   // Do the actual rendering of world contents
-  for (unsigned int entity_id = 0; entity_id < world.entity_positions_.size();
-       ++entity_id) {
-    const auto& entity_type = world.entity_types_[entity_id];
+  for(const auto& entity : world.entities_){
     // Get entity position in camera coordinates
     auto entity_pos =
-        world_to_camera(world.entity_positions_[entity_id], world.camera_);
+        world_to_camera(entity->position_, world.camera_);
+    if(entity_pos.x < 0 || entity_pos.y < 0 ||
+       entity_pos.x > kStartWidth || entity_pos.y > kStartHeight){
+      continue;
+    }
     SDL_Texture* texture{nullptr};
-    switch(entity_type){
-      case World::Tile::CHAIR:
+    switch(entity->type_){
+      case Entity::Tile::CHAIR:
         texture = chair_.get();
         break;
-      case World::Tile::DESK:
+      case Entity::Tile::DESK:
         texture = desk_.get();
         break;
-      case World::Tile::DOOR:
+      case Entity::Tile::DOOR:
         texture = door_.get();
         break;
-      case World::Tile::WORKER:
+      case Entity::Tile::WORKER:
         texture = worker_.get();
         break;
-      case World::Tile::WALL:
+      case Entity::Tile::WALL:
         texture = wall_.get();
         break;
     }

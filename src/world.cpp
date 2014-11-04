@@ -5,9 +5,11 @@
 #include <string>
 
 #include "utils/easylogging++.h"
+#include "utils/glm/glm.hpp"
 
 #include "input.h"
 #include "timer.h"
+#include "entity.h"
 
 #include "world.h"
 
@@ -19,7 +21,7 @@ World::World()
     : is_debug_{true},
       new_obj_index_{-1},
       is_game_over_{false},
-      brush_{Tile::CHAIR}
+      brush_{Entity::Tile::CHAIR}
   {
   random_device rd;
   default_random_engine eng(rd());
@@ -28,8 +30,8 @@ World::World()
     for(unsigned int j = 0; j < kWorldHeight; ++j){
       if(i == 0 || i == kWorldHeight - 1 ||
          j == 0 || j == kWorldWidth - 1){
-        entity_positions_.emplace_back(i, j);
-        entity_types_.emplace_back(Tile::WALL);
+        auto ent = new Entity{Entity::Tile::WALL, glm::vec2{i, j}};
+        entities_.emplace_back(ent);
       }
     }
   }
@@ -48,15 +50,15 @@ void World::update(Input& input) {
       case Input::Action::MOUSE_MOVE:
         mouse_pos = camera_to_world(input.mouse_loc, camera_);
         if(new_obj_index_ != -1){
-          entity_positions_[new_obj_index_] = glm::floor(mouse_pos);
+          entities_[new_obj_index_]->position_ = glm::floor(mouse_pos);
         }
         break;
       case Input::Action::MOUSE_BUTTON_DOWN:
         {
-        new_obj_index_ = entity_types_.size();
-        entity_types_.emplace_back(brush_);
+        new_obj_index_ = entities_.size();
         auto ent_pos = camera_to_world(input.mouse_loc, camera_);
-        entity_positions_.emplace_back(floor(ent_pos.x), floor(ent_pos.y));
+        auto ent = new Entity{brush_, glm::floor(ent_pos)};
+        entities_.emplace_back(ent);
         break;
         }
       case Input::Action::MOUSE_BUTTON_UP:
@@ -82,23 +84,26 @@ void World::update(Input& input) {
         mouse_pos = camera_to_world(input.mouse_loc, camera_);
         break;
       case Input::Action::CHAIR:
-        brush_ = Tile::CHAIR;
+        brush_ = Entity::Tile::CHAIR;
         break;
       case Input::Action::DESK:
-        brush_ = Tile::DESK;
+        brush_ = Entity::Tile::DESK;
         break;
       case Input::Action::DOOR:
-        brush_ = Tile::DOOR;
+        brush_ = Entity::Tile::DOOR;
         break;
       case Input::Action::WORKER:
-        brush_ = Tile::WORKER;
+        brush_ = Entity::Tile::WORKER;
         break;
       case Input::Action::WALL:
-        brush_ = Tile::WALL;
+        brush_ = Entity::Tile::WALL;
         break;
       default:
         break;
     }
+  }
+  for(auto& entity : entities_){
+    entity->update(*this);
   }
   timer_.stop();
 }

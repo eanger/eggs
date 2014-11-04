@@ -1,9 +1,11 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include "utils/glm/glm.hpp"
 #include "timer.h"
+#include "entity.h"
 
 namespace eggs {
 
@@ -36,23 +38,14 @@ glm::vec2 camera_to_world(glm::vec2 camera_pos, const Camera& camera);
 
 class World {
   public:
-  enum class Tile{
-    CHAIR,
-    DESK,
-    DOOR,
-    WORKER,
-    WALL
-  };
-
-  std::vector<glm::vec2> entity_positions_;
-  std::vector<Tile> entity_types_;
+  std::vector<std::unique_ptr<Entity>> entities_;
   bool is_debug_;
   Timer timer_;
   Camera camera_;
   glm::vec2 mouse_pos;
   int new_obj_index_;
   bool is_game_over_;
-  Tile brush_;
+  Entity::Tile brush_;
 
   World();
   void update(Input& input);
