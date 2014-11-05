@@ -1,23 +1,26 @@
 #pragma once
 
-#include "utils/glm/glm.hpp"
+#include "position.h"
 
 namespace eggs {
 class World;
+
+enum class Tile{
+  CHAIR,
+  DESK,
+  DOOR,
+  WORKER,
+  WALL
+};
+
 class Entity {
   public:
-    enum class Tile{
-      CHAIR,
-      DESK,
-      DOOR,
-      WORKER,
-      WALL
-    } type_;
+    Tile type_;
 
-    Entity(Entity::Tile type, glm::vec2 position)
+    Entity(Tile type, Position position)
       : type_{type}, position_{position} {}
     void update(World& world) {}
-    glm::vec2 position_;
+    Position position_;
 };
 
 }
