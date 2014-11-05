@@ -5,7 +5,6 @@
 #include <string>
 
 #include "utils/easylogging++.h"
-#include "utils/glm/glm.hpp"
 
 #include "input.h"
 #include "timer.h"
@@ -19,6 +18,8 @@ namespace eggs {
 
 World::World()
     : is_debug_{true},
+      mouse_pos{0,0},
+      new_obj_{nullptr},
       is_game_over_{false}
   {
   random_device rd;
@@ -48,21 +49,23 @@ void World::update(Input& input) {
         break;
       case Input::Action::MOUSE_MOVE:
         mouse_pos = camera_to_world(input.mouse_loc, camera_);
-        if(new_obj_){
-          auto floored = glm::floor(mouse_pos);
-          map_[*new_obj_].swap(map_[Position{floored.x, floored.y}]);
+        /* move a dragged object only if the slot is vacant */
+        if(new_obj_ && !map_[mouse_pos]){
+          map_[new_obj_->position_].swap(map_[mouse_pos]);
+          new_obj_->position_ = mouse_pos;
         }
         break;
       case Input::Action::MOUSE_BUTTON_DOWN:
         {
-        auto floored_pos = glm::floor(camera_to_world(input.mouse_loc, camera_));
-        Position pos{floored_pos.x, floored_pos.y};
-        auto ent = new Entity{brush_, pos};
-        map_[pos].reset(ent);
+        auto pos = camera_to_world(input.mouse_loc, camera_);
+        new_obj_ = new Entity{brush_, pos};
+        if(!map_[pos]){
+          map_[pos].reset(new_obj_);
+        }
         break;
         }
       case Input::Action::MOUSE_BUTTON_UP:
-        new_obj_.reset(nullptr);
+        new_obj_ = nullptr;
         break;
       case Input::Action::DEBUG:
         is_debug_ = !is_debug_; // toggle debug state
@@ -106,27 +109,33 @@ void World::update(Input& input) {
 }
 
 void Camera::move_left() {
-  position_.x -= 1.0;
+  position_.x_ = position_.x_ > 0 ? position_.x_ - 1.0 : position_.x_;
 }
 
 void Camera::move_right() {
-  position_.x += 1.0;
+  auto right_wall = camera_to_world(Position{kStartWidth, kStartHeight}, *this);
+  position_.x_ = right_wall.x_ < kWorldWidth ? position_.x_ + 1.0 : position_.x_;
 }
 
 void Camera::move_up() {
-  position_.y -= 1.0;
+  position_.y_ = position_.y_ > 0 ? position_.y_ - 1.0 : position_.y_;
 }
 
 void Camera::move_down() {
-  position_.y += 1.0;
+  auto right_wall = camera_to_world(Position{kStartWidth, kStartHeight}, *this);
+  position_.y_ = right_wall.y_ < kWorldWidth ? position_.y_ + 1.0 : position_.y_;
 }
 
-glm::vec2 world_to_camera(glm::vec2 world_pos, const Camera& camera){
-  return (world_pos - camera.get_position()) * camera.get_zoom();
+Position world_to_camera(Position world_pos, const Camera& camera){
+  const auto& cam = camera.get_position();
+  return {(unsigned int) ((world_pos.x_ - cam.x_) * camera.get_zoom()),
+          (unsigned int) ((world_pos.y_ - cam.y_) * camera.get_zoom())};
 }
 
-glm::vec2 camera_to_world(glm::vec2 camera_pos, const Camera& camera){
-  return (camera_pos / camera.get_zoom()) + camera.get_position();
+Position camera_to_world(Position camera_pos, const Camera& camera){
+  const auto& cam = camera.get_position();
+  return {(unsigned int) (camera_pos.x_ / camera.get_zoom() + cam.x_),
+          (unsigned int) (camera_pos.y_ / camera.get_zoom() + cam.y_)};
 }
 
 }

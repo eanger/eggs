@@ -102,15 +102,18 @@ void Screen::update(const Input& input, const World& world){
   SDL_RenderClear(renderer_.get());
   // Do the actual rendering of world contents
   auto cam_pos = world.camera_.get_position();
-  for(unsigned int col = 0; col <= kWorldHeight / kTileSize; ++col){
-    for(unsigned int row = 0; row <= kWorldWidth / kTileSize; ++row){
+  auto bottom_right = camera_to_world(Position{kStartWidth, kStartHeight},
+                                      world.camera_);
+  for(unsigned int col = cam_pos.y_; col < bottom_right.y_; ++col){
+    for(unsigned int row = cam_pos.x_; row < bottom_right.x_; ++row){
     // Get entity position in camera coordinates
-      auto entity_pos = Position{row + cam_pos.x, col + cam_pos.y};
-      if(!world.map_[entity_pos]){ /* there's nothing here */
+      auto entity_world_pos = Position{row, col};
+      auto entity_cam_pos = world_to_camera(entity_world_pos, world.camera_);
+      if(!world.map_[entity_world_pos]){ /* there's nothing here */
         continue;
       }
       SDL_Texture* texture{nullptr};
-      switch(world.map_[entity_pos]->type_){
+      switch(world.map_[entity_world_pos]->type_){
         case Tile::CHAIR:
           texture = chair_.get();
           break;
@@ -127,7 +130,8 @@ void Screen::update(const Input& input, const World& world){
           texture = wall_.get();
           break;
       }
-      SDL_Rect rect{(int) (row * kTileSize), (int) (col * kTileSize), kTileSize, kTileSize};
+      SDL_Rect rect{(int)entity_cam_pos.x_, (int)entity_cam_pos.y_, kTileSize,
+                    kTileSize};
       SDL_RenderCopy(renderer_.get(), texture, nullptr, &rect);
     }
   }
@@ -135,7 +139,7 @@ void Screen::update(const Input& input, const World& world){
     auto world_time = world.timer_.read_ms();
     draw_frame_time(world_time, world);
     stringstream mousestr;
-    mousestr << "Mouse: (" << world.mouse_pos.x << "," << world.mouse_pos.y << ")";
+    mousestr << "Mouse: (" << world.mouse_pos.x_ << "," << world.mouse_pos.y_ << ")";
     print_line_at(mousestr.str(), kStartHeight - kFontHeight, 0);
   }
   SDL_RenderPresent(renderer_.get());

@@ -3,7 +3,6 @@
 #include <vector>
 #include <memory>
 
-#include "utils/glm/glm.hpp"
 #include "timer.h"
 #include "position.h"
 #include "entity.h"
@@ -37,20 +36,20 @@ class Map {
 
 class Camera {
   public:
-    Camera() : zoom_{kTileSize}, position_{0, 0} {}
+    Camera() : zoom_{kTileSize}, position_{0u, 0u} {}
     void move_left();
     void move_right();
     void move_up();
     void move_down();
-    glm::vec2 get_position() const { return position_; }
+    Position get_position() const { return position_; }
     float get_zoom() const { return zoom_; }
   private:
     float zoom_;
-    glm::vec2 position_;
+    Position position_; /* Position of the camera in world coordinates */
 };
 
-glm::vec2 world_to_camera(glm::vec2 world_pos, const Camera& camera);
-glm::vec2 camera_to_world(glm::vec2 camera_pos, const Camera& camera);
+Position world_to_camera(Position world_pos, const Camera& camera);
+Position camera_to_world(Position camera_pos, const Camera& camera);
 
 class World {
   public:
@@ -58,8 +57,8 @@ class World {
   bool is_debug_;
   Timer timer_;
   Camera camera_;
-  glm::vec2 mouse_pos;
-  std::unique_ptr<Position> new_obj_;
+  Position mouse_pos;
+  Entity* new_obj_;
   bool is_game_over_;
   Tile brush_;
 

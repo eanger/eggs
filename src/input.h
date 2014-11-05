@@ -2,7 +2,7 @@
 
 #include <queue>
 
-#include "utils/glm/glm.hpp"
+#include "position.h"
 
 namespace eggs {
 
@@ -10,7 +10,7 @@ class Input {
   public:
     void update();
 
-    glm::vec2 mouse_loc;
+    Position mouse_loc;
     enum class Action{
       NONE,
       QUIT,
