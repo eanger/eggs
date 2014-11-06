@@ -1,9 +1,20 @@
 # Quick things
-* Keep huge matrix of locations with every unit at each location -> simplifies lookup
+* Consider general includes.h header including utils (testing, logging)
 
-# Bigger Tasks
-* Button (pressed, or clickable) that opens up menu of buildables. Click to place buildable.
-* Person entity that has an AI
-* Placing an object requires a person to build
-* Event queue managing when people request being moved, how long it takes to make things, etc
-* Allow scrolling or ctrl-= / ctrl-- to zoom in and out (bounded on the high and low end)
+# Features
+
+## GUI and interaction
+* Set of buttons to perform actions
+* Mouse can be in multiple modes: build, select, inspect (right click)
+* Visual representation of what button is clicked (depth/color)
+* Allow changing of zoom level and movement of viewport
+
+## Entity logic/AI
+* Each Entity is in charge of specifying its own behaviour
+* Person Entities are in charge of building things and doing work
+* Pathfinding for an entity to its target (used for building, finding offices/meetings, bathrooms, etc)
+* Some entities can be permanent (ie part of the landscape, and immobile)
+
+## Event management
+* A newly constructed object remains in "unbuilt" state until constructed
+* Construction requires time and labor and parts

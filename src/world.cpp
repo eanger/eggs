@@ -40,6 +40,7 @@ World::World()
 void World::update(Input& input) {
   timer_.reset();
   timer_.start();
+  event_queue_.update();
   while(!input.actions_.empty()){
     const auto action = input.actions_.front();
     input.actions_.pop();

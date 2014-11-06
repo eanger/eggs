@@ -7,6 +7,7 @@ screen.cpp
 state.cpp
 world.cpp
 timer.cpp
+event_queue.cpp
 ${INCS})
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})

@@ -6,6 +6,7 @@
 #include "timer.h"
 #include "position.h"
 #include "entity.h"
+#include "event_queue.h"
 
 namespace eggs {
 
@@ -61,6 +62,7 @@ class World {
   Entity* new_obj_;
   bool is_game_over_;
   Tile brush_;
+  EventQueue event_queue_;
 
   World();
   void update(Input& input);
