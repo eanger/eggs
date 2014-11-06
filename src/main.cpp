@@ -3,6 +3,11 @@
 #include "utils/easylogging++.h"
 #include "engine.h"
 
+extern "C"
+{
+  void *__dso_handle = nullptr;
+}
+
 using namespace std;
 
 _INITIALIZE_EASYLOGGINGPP
