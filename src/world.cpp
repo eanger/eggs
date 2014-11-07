@@ -86,8 +86,8 @@ void World::update(Input& input) {
           break;
         }
         auto pos = camera_to_world(input.mouse_loc, camera_);
-        new_obj_ = new Entity{*brush_, pos};
         if(!map_[pos]){
+          new_obj_ = new Entity{*brush_, pos};
           map_[pos].reset(new_obj_);
         }
         break;

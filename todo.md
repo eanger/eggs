@@ -1,6 +1,5 @@
 # Quick things
 
-
 # Features
 
 ## GUI and interaction
@@ -8,6 +7,7 @@
 * Mouse can be in multiple modes: build, select, inspect (right click)
 * Visual representation of what button is clicked (depth/color)
 * Allow changing of zoom level and movement of viewport
+* Should have special mode to allow removal (long press or right click)
 
 ## Entity logic/AI
 * Each Entity is in charge of specifying its own behaviour
@@ -17,4 +17,6 @@
 
 ## Event management
 * A newly constructed object remains in "unbuilt" state until constructed
+* An "unbuilt" object still exists (ghostly) as an object-plan for displaying/manipulating purposes
+* What happens when an object-plan is moved? Only commit to object construction on button UP
 * Construction requires time and labor and parts
