@@ -1,5 +1,5 @@
 # Quick things
-* Consider general includes.h header including utils (testing, logging)
+
 
 # Features
 

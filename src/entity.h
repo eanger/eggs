@@ -1,26 +1,22 @@
 #pragma once
 
 #include "position.h"
+#include "entity_type.h"
+
+struct SDL_Texture;
 
 namespace eggs {
 class World;
 
-enum class Tile{
-  CHAIR,
-  DESK,
-  DOOR,
-  WORKER,
-  WALL
-};
-
 class Entity {
   public:
-    Tile type_;
-
-    Entity(Tile type, Position position)
-      : type_{type}, position_{position} {}
+    Entity(EntityType& type, Position position)
+      : position_{position}, type_(type) {}
     void update(World& world) {}
+    SDL_Texture* get_texture() { return type_.texture_.get(); }
     Position position_;
+  private:
+    EntityType& type_;
 };
 
 }

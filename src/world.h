@@ -7,6 +7,9 @@
 #include "position.h"
 #include "entity.h"
 #include "event_queue.h"
+#include "entity_type.h"
+
+struct SDL_Renderer;
 
 namespace eggs {
 
@@ -54,17 +57,23 @@ Position camera_to_world(Position camera_pos, const Camera& camera);
 
 class World {
   public:
-  Map<std::unique_ptr<Entity>, kWorldHeight, kWorldWidth> map_;
-  bool is_debug_;
-  Timer timer_;
-  Camera camera_;
-  Position mouse_pos;
-  Entity* new_obj_;
-  bool is_game_over_;
-  Tile brush_;
-  EventQueue event_queue_;
+    Map<std::unique_ptr<Entity>, kWorldHeight, kWorldWidth> map_;
+    bool is_debug_;
+    Timer timer_;
+    Camera camera_;
+    Position mouse_pos;
+    Entity* new_obj_;
+    bool is_game_over_;
+    EntityType* brush_;
+    EventQueue event_queue_;
 
-  World();
-  void update(Input& input);
+    World(SDL_Renderer* renderer);
+    void update(Input& input);
+  private:
+    EntityType chair_entity_;
+    EntityType desk_entity_;
+    EntityType door_entity_;
+    EntityType worker_entity_;
+    EntityType wall_entity_;
 };
 }

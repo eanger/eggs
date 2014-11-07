@@ -18,7 +18,6 @@ class Screen{
     ResourceHandle<SDL_Window> window_;
     ResourceHandle<SDL_Renderer> renderer_;
     ResourceHandle<TTF_Font> font_;
-    ResourceHandle<SDL_Texture> chair_, desk_, door_, worker_, wall_;
 
     SDL_Color empty_, text_color_;
 
@@ -27,5 +26,6 @@ class Screen{
     void update(const Input& input, const World& world);
     void print_line_at(const std::string& line, unsigned int y, unsigned int x);
     void draw_frame_time(float frame_time, const World& world);
+    SDL_Renderer* get_renderer() const { return renderer_.get(); }
 };
 }

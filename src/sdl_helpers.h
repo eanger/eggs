@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 #include "SDL.h"
+#include "SDL_image.h"
 
 #include "utils/easylogging++.h"
 
@@ -37,6 +38,11 @@ ScopedCallHandle make_scoped_call(Creator creator,
   }
   auto deleter = [=](void*){ destructor(); };
   return std::unique_ptr<void*,decltype(deleter)>(nullptr, deleter);
+}
+
+inline SDL_Texture* make_texture_resource(SDL_Renderer* renderer, const char* filename){
+  auto surf = make_resource(IMG_Load, SDL_FreeSurface, filename);
+  return SDL_CreateTextureFromSurface(renderer, surf.get());
 }
 
 }

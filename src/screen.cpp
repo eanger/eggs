@@ -12,6 +12,7 @@
 #include "timer.h"
 #include "input.h"
 #include "entity.h"
+#include "sdl_helpers.h"
 
 #include "screen.h"
 
@@ -33,11 +34,6 @@ void Screen::print_line_at(const std::string& line,
   SDL_RenderCopy(renderer_.get(), texture, nullptr /* whole text texture */, &position);
   SDL_DestroyTexture(texture);
   SDL_FreeSurface(surf);
-}
-
-SDL_Texture* make_texture_resource(SDL_Renderer* renderer, const char* filename){
-  auto surf = make_resource(IMG_Load, SDL_FreeSurface, filename);
-  return SDL_CreateTextureFromSurface(renderer, surf.get());
 }
 
 Screen::Screen() :
@@ -65,27 +61,7 @@ Screen::Screen() :
                           SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)},
   font_{make_resource(TTF_OpenFont, TTF_CloseFont,
                       (assets_path_ + "../assets/DroidSansMono.ttf").c_str(),
-                      kFontPtSize)},
-  chair_{make_resource(make_texture_resource,
-                       SDL_DestroyTexture,
-                       renderer_.get(),
-                       (assets_path_ +  "/../assets/chair.bmp").c_str())},
-  desk_{make_resource(make_texture_resource,
-                       SDL_DestroyTexture,
-                       renderer_.get(),
-                       (assets_path_ +  "/../assets/desk.bmp").c_str())},
-  door_{make_resource(make_texture_resource,
-                       SDL_DestroyTexture,
-                       renderer_.get(),
-                       (assets_path_ +  "/../assets/door.bmp").c_str())},
-  worker_{make_resource(make_texture_resource,
-                       SDL_DestroyTexture,
-                       renderer_.get(),
-                       (assets_path_ +  "/../assets/guy.bmp").c_str())},
-  wall_{make_resource(make_texture_resource,
-                       SDL_DestroyTexture,
-                       renderer_.get(),
-                       (assets_path_ +  "/../assets/walls.bmp").c_str())}
+                      kFontPtSize)}
 {
 	empty_.r = 255;
 	empty_.g = 255;
@@ -112,24 +88,7 @@ void Screen::update(const Input& input, const World& world){
       if(!world.map_[entity_world_pos]){ /* there's nothing here */
         continue;
       }
-      SDL_Texture* texture{nullptr};
-      switch(world.map_[entity_world_pos]->type_){
-        case Tile::CHAIR:
-          texture = chair_.get();
-          break;
-        case Tile::DESK:
-          texture = desk_.get();
-          break;
-        case Tile::DOOR:
-          texture = door_.get();
-          break;
-        case Tile::WORKER:
-          texture = worker_.get();
-          break;
-        case Tile::WALL:
-          texture = wall_.get();
-          break;
-      }
+      auto texture = world.map_[entity_world_pos]->get_texture();
       SDL_Rect rect{(int)entity_cam_pos.x_, (int)entity_cam_pos.y_, kTileSize,
                     kTileSize};
       SDL_RenderCopy(renderer_.get(), texture, nullptr, &rect);

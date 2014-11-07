@@ -13,8 +13,8 @@ namespace eggs {
 
 void start_engine() {
   Input input;
-  World world;
   Screen screen;
+  World world(screen.get_renderer());
   while(!world.is_game_over_){
     input.update();
     world.update(input);
