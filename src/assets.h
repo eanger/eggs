@@ -6,10 +6,19 @@
 
 namespace eggs {
 
-std::string get_asset_path(std::string name) {
-  static std::string assets_path = SDL_GetBasePath();
+inline std::string get_bin_path() {
+  static std::string bin_path = SDL_GetBasePath();
+  return bin_path;
+}
 
-  return assets_path + "/../assets/" + name;
+inline std::string get_asset_path(std::string name) {
+  auto bin_path = get_bin_path();
+  return bin_path + "/../assets/" + name;
+}
+
+inline std::string get_lib_path(std::string lib_name) {
+  auto bin_path = get_bin_path();
+  return bin_path + "/" + lib_name;
 }
 
 }
