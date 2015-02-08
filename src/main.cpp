@@ -15,6 +15,8 @@ using namespace eggs;
 
 _INITIALIZE_EASYLOGGINGPP
 
+namespace {
+
 int checked_dlclose(void* handle){
   if(handle){
     return dlclose(handle);
@@ -31,7 +33,7 @@ unique_ptr<void, int (*)(void*)> get_library_handle() {
   stringstream sys_call;
   sys_call << "cp " << orig_lib << " " << live_lib;
   system(sys_call.str().c_str());
-  LOG(INFO) << "Opening library";
+  LOG(INFO) << "Reloading library";
   handle.reset(dlopen(live_lib.c_str(), RTLD_LAZY));
   if (!handle) {
     LOG(FATAL) << "Unable to open library: " << dlerror();
@@ -50,17 +52,18 @@ T get_symbol(const char* name, void* handle){
   return result;
 }
 
+} // end unnamed namespace
+
 int main(int argc, char* argv[]){
   _START_EASYLOGGINGPP(argc, argv);
   time_point<system_clock> last_reload_time;
-  typedef bool (*update_t)(State*);
+  typedef void (*update_t)(State*);
   update_t update;
   unique_ptr<void,int(*)(void*)> handle{nullptr, checked_dlclose};
 
   Screen screen;
   State state{screen.get_renderer()};
-  bool done = false;
-  while(!done){
+  while(!state.done){
     auto elapsed = system_clock::now() - last_reload_time;
     if(elapsed > seconds(5)){
       handle.reset(nullptr);
@@ -71,7 +74,7 @@ int main(int argc, char* argv[]){
     assert(update && "Did not successfully load symbol");
   
     read_input(state);
-    done = update(&state);
+    update(&state);
     screen.update(state);
   }
   

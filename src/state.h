@@ -54,6 +54,7 @@ class Map {
 };
 
 struct State {
+  bool done;
   Position mouse_loc;
   std::queue<Action> input_actions;
   Camera camera;
@@ -70,7 +71,7 @@ struct State {
   EntityType wall_entity;
 
   State(SDL_Renderer* renderer)
-      : camera{kTileSize}, is_debug{true}, new_obj{nullptr},
+      : done{false}, camera{kTileSize}, is_debug{true}, new_obj{nullptr},
         chair_entity{make_resource(make_texture_resource, SDL_DestroyTexture,
                                    renderer,
                                    get_asset_path("chair.bmp").c_str())},

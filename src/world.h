@@ -1,8 +1,6 @@
 #pragma once
 
-#include "state.h"
-
 namespace eggs {
-
-extern "C" bool update(State* state);
+struct State;
+extern "C" void update(State* state);
 }
