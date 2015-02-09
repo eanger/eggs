@@ -1,0 +1,8 @@
+Restructure the game data as members in tables (in sqlite??):
+    'Entities'      - one row per entity, one column per entity info (position, texture, type(?))
+    'Workers'       - one row per worker, has a key into entities table, but lets you query for tasks. maybe a cur_taskID column?
+    'Tasks'         - list of things the user wants to do. build this, destroy that
+    'Collidables'   - list of things which undergo collision and pathfinding
+    'Textures'      - all textures used for rendering. some way for animated textures (ie texture sets)?
+
+Should this include stuff like user input?
